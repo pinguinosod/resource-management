@@ -1,14 +1,14 @@
 import React from 'react'
-import './Miner.css'
+import './Worker.css'
 
-const Miner = (props) => {
+const Worker = (props) => {
   const resourceGathering = props.resources.filter((resource) => {
     return resource.id === props.gathers
   })[0]
   const gathers = resourceGathering.name;
 
   return (
-    <div className="Miner">
+    <div className="Worker">
       <h2>{props.name}</h2>
       <div>
         Gathers: {gathers}
@@ -22,4 +22,4 @@ const Miner = (props) => {
   )
 }
 
-export default Miner
+export default Worker

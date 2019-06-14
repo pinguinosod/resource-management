@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Miner from './Miner/Miner'
+import Worker from './Worker/Worker'
 import './App.css'
 
 class App extends Component {
@@ -107,14 +107,14 @@ class App extends Component {
         <main className="App-main">
           {
             this.state.workers.map(worker => {
-              return <Miner
+              return <Worker
                 key={worker.id}
                 name={worker.name}
                 working={worker.working}
                 gathers={worker.gathers}
                 resources={this.state.resources}
                 workToggleHandler={() => this.workToggleHandler(worker.id)}>
-              </Miner>
+              </Worker>
             })
           }
         </main>
