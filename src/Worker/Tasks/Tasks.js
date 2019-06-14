@@ -8,8 +8,17 @@ const Tasks = (props) => {
         {
           props.resources.map(resource => {
             return <button key={resource.id}
-              className={resource.id === props.gathers ? 'selected' : ''}
-              onClick={() => props.taskChangeHandler(resource.id)}>
+              className={
+                resource.id === props.gathers && props.working ? 'selected' : ''
+              }
+              onClick={
+                () => {
+                  props.taskChangeHandler(resource.id)
+                  if (!props.working || (props.working && resource.id === props.gathers)) {
+                    props.workToggleHandler()
+                  }
+                }
+              }>
               {resource.name}
             </button>
           })

@@ -1,6 +1,6 @@
 .Worker {
   display: inline-block;
-  border: 1px solid black;
+  border: 2px solid;
   box-shadow: 0 2px 2px #ccc;
   width: 200px;
   padding: 0 20px 20px;
@@ -8,10 +8,10 @@
   border-radius: 5px;
 }
 
-button.working {
-  background-color: lightgreen;
+.Worker.active {
+  border-color: greenyellow;
 }
 
-button.resting {
-  background-color: lightsalmon;
+.Worker.idle {
+  border-color: lightgray;
 }
