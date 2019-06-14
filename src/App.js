@@ -5,31 +5,36 @@ import './App.css'
 class App extends Component {
 
   state = {
-    gold: 0,
-    miners: [{
+    coins: 0,
+    resources: [{
+      id: 1,
+      name: 'Wood',
+      quantity: 0
+    }, {
+      id: 2,
+      name: 'Rock',
+      quantity: 0
+    }, {
+      id: 3,
+      name: 'Gold',
+      quantity: 0
+    }],
+    workers: [{
       id: 1,
       name: 'Hugo',
-      mining: true
+      working: true,
+      gathers: 1
     }, {
       id: 2,
       name: 'Paco',
-      mining: false
+      working: false,
+      gathers: 2
     }, {
       id: 3,
       name: 'Luis',
-      mining: false
+      working: false,
+      gathers: 3
     }]
-  }
-
-  collectGold = () => {
-    this.setState(prevState => {
-      const goldMined = this.state.miners.reduce((accumulatedGold, miner) => {
-        return miner.mining ? accumulatedGold + 1 : accumulatedGold
-      }, 0)
-      return {
-        gold: prevState.gold + goldMined
-      }
-    })
   }
 
   componentDidMount() {
@@ -43,9 +48,24 @@ class App extends Component {
   }
 
   tick() {
+    this.collectResources()
+  }
+
+  collectResources = () => {
     this.setState(prevState => {
+      const newResources = prevState.resources.map((resource) => {
+        const gathered = this.state.workers.reduce((accumulatedResource, worker) => {
+          return worker.working && worker.gathers === resource.id ? accumulatedResource + 1 : accumulatedResource
+        }, 0)
+        return {
+          id: resource.id,
+          name: resource.name,
+          quantity: resource.quantity + gathered
+        }
+      })
+
       return {
-        gold: prevState.gold + 1
+        resources: newResources
       }
     })
   }
@@ -53,15 +73,16 @@ class App extends Component {
   workToggleHandler = (id) => {
     this.setState(prevState => {
       return {
-        miners: prevState.miners.map((miner) => {
-          if (miner.id === id) {
+        workers: prevState.workers.map((worker) => {
+          if (worker.id === id) {
             return {
-              id: miner.id,
-              name: miner.name,
-              mining: !miner.mining
+              id: worker.id,
+              name: worker.name,
+              working: !worker.working,
+              gathers: worker.gathers
             }
           } else {
-            return miner
+            return worker
           }
         })
       }
@@ -74,18 +95,25 @@ class App extends Component {
         <header className="App-header">
           <h1>Resource Management</h1>
           <div className="topBar">
-            <span>Gold: {this.state.gold}</span>
-            <button onClick={this.collectGold}>Collect Gold</button>
+            {
+              this.state.resources.map(resource => {
+                return <span key={resource.id}>
+                  {resource.name}: {resource.quantity}
+                </span>
+              })
+            }
           </div>
         </header>
         <main className="App-main">
           {
-            this.state.miners.map((miner) => {
+            this.state.workers.map(worker => {
               return <Miner
-                key={miner.id}
-                name={miner.name}
-                mining={miner.mining}
-                workToggleHandler={() => this.workToggleHandler(miner.id)}>
+                key={worker.id}
+                name={worker.name}
+                working={worker.working}
+                gathers={worker.gathers}
+                resources={this.state.resources}
+                workToggleHandler={() => this.workToggleHandler(worker.id)}>
               </Miner>
             })
           }
