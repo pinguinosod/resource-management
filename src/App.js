@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import Miner from './Miner/Miner'
 import './App.css'
 
-function App() {
-  const [goldState, setGoldState] = useState({
-    gold: 0
-  })
+class App extends Component {
 
-  const [minersState, setMinersState] = useState(
-    [{
+  state = {
+    gold: 0,
+    miners: [{
       id: 1,
       name: 'Hugo',
-      mining: false
+      mining: true
     }, {
       id: 2,
       name: 'Paco',
@@ -21,78 +19,80 @@ function App() {
       name: 'Luis',
       mining: false
     }]
-  )
+  }
 
-  const collectGold = () => {
-    setGoldState(prevState => {
-      const goldMined = minersState.reduce((accumulatedGold, miner) => {
+  collectGold = () => {
+    this.setState(prevState => {
+      const goldMined = this.state.miners.reduce((accumulatedGold, miner) => {
         return miner.mining ? accumulatedGold + 1 : accumulatedGold
       }, 0)
       return {
         gold: prevState.gold + goldMined
-      }    
+      }
     })
   }
 
-  useEffect(() => {
-    const intervalTicker = setInterval(() => {
-      setGoldState(prevState => {
-        return {
-          gold: prevState.gold + 1
-        }
-      })
+  componentDidMount() {
+    this.intervalTicker = setInterval(() => {
+      this.tick()
     }, 1000)
-
-    return () => {
-      clearInterval(intervalTicker)
-    }
-  }, []); // passing an empty array as second argument triggers the callback in useEffect only after the initial render thus replicating `componentDidMount` lifecycle behaviour
-
-  const workToggleHandler = (id) => {
-    setMinersState(minersState.map((miner) => {
-      if (miner.id === id) {
-        return {
-          id: miner.id,
-          name: miner.name,
-          mining: !miner.mining
-        }
-      } else {
-        return miner
-      }
-    }))
   }
 
-  let miners = null
+  componentWillUnmount() {
+    clearInterval(this.intervalTicker)
+  }
 
-  miners = (
-    <div>
-      {
-        minersState.map((miner) => {
-          return <Miner
-            key={miner.id}
-            name={miner.name}
-            mining={miner.mining}
-            workToggleHandler={() => workToggleHandler(miner.id)}>
-          </Miner>
+  tick() {
+    this.setState(prevState => {
+      return {
+        gold: prevState.gold + 1
+      }
+    })
+  }
+
+  workToggleHandler = (id) => {
+    this.setState(prevState => {
+      return {
+        miners: prevState.miners.map((miner) => {
+          if (miner.id === id) {
+            return {
+              id: miner.id,
+              name: miner.name,
+              mining: !miner.mining
+            }
+          } else {
+            return miner
+          }
         })
       }
-    </div>
-  )
+    })
+  }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Resource Management</h1>
-        <div className="topBar">
-          <span>Gold: {goldState.gold}</span>
-          <button onClick={collectGold}>Collect Gold</button>
-        </div>
-      </header>
-      <main className="App-main">
-        {miners}
-      </main>
-    </div>
-  )
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1>Resource Management</h1>
+          <div className="topBar">
+            <span>Gold: {this.state.gold}</span>
+            <button onClick={this.collectGold}>Collect Gold</button>
+          </div>
+        </header>
+        <main className="App-main">
+          {
+            this.state.miners.map((miner) => {
+              return <Miner
+                key={miner.id}
+                name={miner.name}
+                mining={miner.mining}
+                workToggleHandler={() => this.workToggleHandler(miner.id)}>
+              </Miner>
+            })
+          }
+        </main>
+      </div>
+    )
+  }
 }
 
 export default (App)
