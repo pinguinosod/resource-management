@@ -89,6 +89,25 @@ class App extends Component {
     })
   }
 
+  taskChangeHandler = (workerId, resourceId) => {
+    this.setState(prevState => {
+      return {
+        workers: prevState.workers.map((worker) => {
+          if (worker.id === workerId) {
+            return {
+              id: worker.id,
+              name: worker.name,
+              working: worker.working,
+              gathers: resourceId
+            }
+          } else {
+            return worker
+          }
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -113,7 +132,8 @@ class App extends Component {
                 working={worker.working}
                 gathers={worker.gathers}
                 resources={this.state.resources}
-                workToggleHandler={() => this.workToggleHandler(worker.id)}>
+                workToggleHandler={() => this.workToggleHandler(worker.id)}
+                taskChangeHandler={(resourceId) => this.taskChangeHandler(worker.id, resourceId)}>
               </Worker>
             })
           }
