@@ -8,37 +8,67 @@ const TimeTrack = (props) => {
     const DAYS_IN_WEEK = 5
     const WEEKS_IN_MONTH = 4
     const MONTHS_IN_YEAR = 12
+    const timeElapsedObject = {
+      hours: 0,
+      days: 0,
+      weeks: 0,
+      months: 0,
+      years: 0
+    }
 
     if (hours < HOURS_IN_DAY) {
-      return hours + ' hours'
+      timeElapsedObject.hours = hours
+      return timeElapsedObject
     }
 
     const days = Math.floor(hours / HOURS_IN_DAY)
     const restHours = (hours - (days * HOURS_IN_DAY))
     if (days < DAYS_IN_WEEK) {
-      return days + ' days, ' + restHours + ' hours'
+      timeElapsedObject.hours = restHours
+      timeElapsedObject.days = days
+      return timeElapsedObject
     }
 
     const weeks = Math.floor(days / DAYS_IN_WEEK)
     const restDays = (days - (weeks * DAYS_IN_WEEK))
     if (weeks < WEEKS_IN_MONTH) {
-      return weeks + ' weeks, ' + restDays + ' days, ' + restHours + ' hours'
+      timeElapsedObject.hours = restHours
+      timeElapsedObject.days = restDays
+      timeElapsedObject.weeks = weeks
+      return timeElapsedObject
     }
 
     const months = Math.floor(weeks / WEEKS_IN_MONTH)
     const restWeeks = (weeks - (months * WEEKS_IN_MONTH))
     if (months < MONTHS_IN_YEAR) {
-      return months + ' months, ' + restWeeks + ' weeks, ' + restDays + ' days, ' + restHours + ' hours'
+      timeElapsedObject.hours = restHours
+      timeElapsedObject.days = restDays
+      timeElapsedObject.weeks = restWeeks
+      timeElapsedObject.months = months
+      return timeElapsedObject
     }
 
     const years = Math.floor(months / MONTHS_IN_YEAR)
     const restMonths = (months - (years * MONTHS_IN_YEAR))
-    return years + ' years, ' + restMonths + ' months, ' + restWeeks + ' weeks, ' + restDays + ' days, ' + restHours + ' hours'
+    timeElapsedObject.hours = restHours
+    timeElapsedObject.days = restDays
+    timeElapsedObject.weeks = restWeeks
+    timeElapsedObject.months = restMonths
+    timeElapsedObject.years = years
+    return timeElapsedObject
   }
 
+  const timeElapsedObject = timeElapsed(props.hours)
+
   return (
-    <div>
-      Time elapsed: {timeElapsed(props.hours)}
+    <div className="TimeTrack">
+      <ul>
+        <li>Year: {timeElapsedObject.years}</li>
+        <li>Month: {timeElapsedObject.months}</li>
+        <li>Week: {timeElapsedObject.weeks}</li>
+        <li>Day: {timeElapsedObject.days}</li>
+        <li>Hour: {timeElapsedObject.hours}</li>
+      </ul>
       <button onClick={props.pauseToggleHandler}>
         {props.paused ? 'Resume' : 'Pause'}
       </button>

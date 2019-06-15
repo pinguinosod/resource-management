@@ -1,17 +1,28 @@
 .Worker {
   display: inline-block;
   border: 2px solid;
-  box-shadow: 0 2px 2px #ccc;
-  width: 200px;
-  padding: 0 20px 20px;
+  width: 300px;
+  padding: 0 10px 20px;
   margin: 10px;
   border-radius: 5px;
 }
 
+.App.paused .Worker.active {
+  background-color: lightgray;
+  border-color: lightgray;
+  box-shadow: 0 2px 2px lightgray;
+}
+
+.App.paused .Worker.idle {
+  background-color: lightgray;
+}
+
 .Worker.active {
   border-color: greenyellow;
+  box-shadow: 0 2px 2px greenyellow;
 }
 
 .Worker.idle {
   border-color: lightgray;
+  box-shadow: 0 2px 2px lightgray;
 }

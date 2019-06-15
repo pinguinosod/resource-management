@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Resources from './Resources/Resources'
 import Worker from './Worker/Worker'
 import TimeTrack from './TimeTrack/TimeTrack'
 import './App.css'
@@ -43,7 +44,7 @@ class App extends Component {
   componentDidMount() {
     this.intervalTicker = setInterval(() => {
       this.tick()
-    }, 550)
+    }, 1000)
   }
 
   componentWillUnmount() {
@@ -118,31 +119,22 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className={this.state.paused ? 'App paused' : 'App'}>
+        <header>
           <h1>Resource Management</h1>
-          <div className="topBar">
-            {
-              this.state.resources.map(resource => {
-                return <span key={resource.id}>
-                  {resource.name}: {resource.quantity}
-                </span>
+          <TimeTrack paused={this.state.paused}
+            hours={this.state.hours}
+            pauseToggleHandler={() => {
+              this.setState(prevState => {
+                return {
+                  paused: !prevState.paused
+                }
               })
-            }
-          </div>
+            }} />
+          <br />
+          <Resources resources={this.state.resources} />
         </header>
-        <main className="App-main">
-          <aside>
-            <TimeTrack paused={this.state.paused}
-              hours={this.state.hours}
-              pauseToggleHandler={() => {
-                this.setState(prevState => {
-                  return {
-                    paused: !prevState.paused
-                  }
-                })
-              }} />
-          </aside>
+        <main>
           {
             this.state.workers.map(worker => {
               return <Worker
