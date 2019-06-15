@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import Worker from './Worker/Worker'
+import TimeTrack from './TimeTrack/TimeTrack'
 import './App.css'
 
 class App extends Component {
 
   state = {
     coins: 0,
+    paused: false,
+    hours: 0,
     resources: [{
       id: 1,
       name: 'Wood',
@@ -40,7 +43,7 @@ class App extends Component {
   componentDidMount() {
     this.intervalTicker = setInterval(() => {
       this.tick()
-    }, 1000)
+    }, 550)
   }
 
   componentWillUnmount() {
@@ -48,7 +51,12 @@ class App extends Component {
   }
 
   tick() {
-    this.collectResources()
+    if (!this.state.paused) {
+      this.collectResources()
+      this.setState(prevState => {
+        return { hours: prevState.hours + 1 }
+      })
+    }
   }
 
   collectResources = () => {
@@ -124,6 +132,17 @@ class App extends Component {
           </div>
         </header>
         <main className="App-main">
+          <aside>
+            <TimeTrack paused={this.state.paused}
+              hours={this.state.hours}
+              pauseToggleHandler={() => {
+                this.setState(prevState => {
+                  return {
+                    paused: !prevState.paused
+                  }
+                })
+              }} />
+          </aside>
           {
             this.state.workers.map(worker => {
               return <Worker
