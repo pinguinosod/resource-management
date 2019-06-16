@@ -99,8 +99,8 @@ class App extends Component {
       name: 'Luis',
       working: true,
       currentTask: {
-        task: 'produce',
-        targetId: 1
+        task: 'gather',
+        targetId: 2
       }
     }]
   }
@@ -295,7 +295,7 @@ class App extends Component {
               })
             }} />
           <br />
-          <div className="hoard">{this.state.coins} Coins</div>
+          <div className="hoard"><span>{this.state.coins}</span> Coins</div>
           <br />
           <Resources
             materials={this.state.materials}

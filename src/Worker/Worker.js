@@ -12,13 +12,20 @@ const Worker = (props) => {
   }
 
   const currentTask = () => {
-    return props.working ? props.currentTask.task + ' ' + getTaskTargetName(props.currentTask) : 'Rest'
+    if (!props.working) {
+      return 'Resting'
+    }
+    if (props.currentTask.task === "produce") {
+      return 'producing ' + getTaskTargetName(props.currentTask)
+    }
+    return props.currentTask.task + 'ing ' + getTaskTargetName(props.currentTask)
   }
 
   return (
     <div className={props.working ? 'Worker active' : 'Worker idle'}>
       <h2>{props.name}</h2>
-      <div>Task: <span className="current-task">{currentTask()}</span></div>
+      <span className="current-task">{currentTask()}</span>
+      <br />
       <Tasks
         currentTask={props.currentTask}
         materials={props.materials}

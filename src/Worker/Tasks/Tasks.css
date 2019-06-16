@@ -1,37 +1,56 @@
-.Tasks {
-  margin: 5px;
-}
-
 .Tasks ul.tab-list  {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
   padding: 0;
   cursor: pointer;
 }
 
 .Tasks ul.tab-list > li {
-  display: inline;
-  padding: 10px 20px;
+  width: 100%;
+  display: inline-block;
+  margin: 0;
+  padding: 10px 15px;
   border: 1px solid lightgray;
+  border-bottom: 1px solid gray;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  margin: 0 -1px 0 -1px;
+  z-index: 1;
 }
 
 .Tasks ul.tab-list > li.selected {
   border-left: 1px solid gray;
   border-top: 1px solid gray;
   border-right: 1px solid gray;
-  border-bottom: none;
+  border-bottom: 1px solid white;
+  font-weight: bold;
+  z-index: 3;
 }
 
 .App.paused .Tasks ul.tab-list > li {
   border: 1px solid gray;
+  border-bottom: 1px solid black;
 }
 
 .App.paused .Tasks ul.tab-list > li.selected {
   border-left: 1px solid black;
   border-top: 1px solid black;
   border-right: 1px solid black;
-  border-bottom: none;
+  border-bottom: 1px solid lightgray;
+}
+
+.Tasks .tab-wrapper {
+  margin-top: -11px;
+  padding: 15px 9px 15px 9px;
+  border:  1px solid gray;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 1px 1px lightgray;
+  z-index: 2;
+}
+
+.App.paused .Tasks .tab-wrapper {
+  border:  1px solid black;
 }
 
 .Tasks .inactive {
@@ -40,16 +59,31 @@
 
 .Tasks .button-grid {
   display: grid;
+  justify-content: space-between;
   grid-template-columns: auto auto auto;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
 }
 
 .Tasks button {
   height: 54px;
-  width: 96px;
+  width: 93px;
   margin: 0;
-  padding: 10px 10px;
+  padding: 0;
+  border-radius: 0;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: none;
+  border-bottom: none;
+  background-color:lightgray;
+  word-wrap: break-word;
+}
+
+.Tasks button:focus {
+  outline: none;
 }
 
 .Tasks button.selected {
   background-color: lightgreen;
+  font-weight: bold;
 }
