@@ -1,3 +1,16 @@
 .App {
   text-align: center;
 }
+
+.App .hoard {
+  display: inline-block;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  margin: 10px;
+  padding: 15px;
+  box-shadow: 0 1px 2px #ccc;
+}
+
+.App.paused .hoard {
+  background-color: lightgray;
+}

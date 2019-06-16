@@ -30,7 +30,8 @@ class App extends Component {
         materialId: 1,
         quantity: 2
       }],
-      quantity: 0
+      quantity: 0,
+      price: 3
     }, {
       id: 3,
       name: 'Leather Jacket',
@@ -38,7 +39,8 @@ class App extends Component {
         materialId: 2,
         quantity: 10
       }],
-      quantity: 0
+      quantity: 0,
+      price: 16
     }, {
       id: 5,
       name: 'Frankfurter',
@@ -46,7 +48,8 @@ class App extends Component {
         materialId: 3,
         quantity: 2
       }],
-      quantity: 0
+      quantity: 0,
+      price: 3
     }, {
       id: 2,
       name: 'Wooden Bench',
@@ -54,7 +57,8 @@ class App extends Component {
         materialId: 1,
         quantity: 10
       }],
-      quantity: 0
+      quantity: 0,
+      price: 16
     }, {
       id: 4,
       name: 'Lederhosen',
@@ -62,7 +66,8 @@ class App extends Component {
         materialId: 2,
         quantity: 12
       }],
-      quantity: 0
+      quantity: 0,
+      price: 21
     }, {
       id: 6,
       name: 'Wiener Schnitzel',
@@ -70,7 +75,8 @@ class App extends Component {
         materialId: 3,
         quantity: 3
       }],
-      quantity: 0
+      quantity: 0,
+      price: 5
     }],
     workers: [{
       id: 1,
@@ -113,6 +119,7 @@ class App extends Component {
     if (!this.state.paused) {
       this.collectMaterials()
       this.produceProducts()
+      this.sellProducts()
       this.setState(prevState => {
         return { hours: prevState.hours + 1 }
       })
@@ -164,12 +171,45 @@ class App extends Component {
           id: product.id,
           name: product.name,
           recipe: product.recipe,
-          quantity: product.quantity + produced
+          quantity: product.quantity + produced,
+          price: product.price
         }
       })
 
       return {
         materials: newMaterials,
+        products: newProducts
+      }
+    })
+  }
+
+  sellProducts = () => {
+    this.setState(prevState => {
+      let currentCoins = this.state.coins
+      const newProducts = prevState.products.map((product) => {
+        const selling = this.state.workers.reduce((accumulatedProduct, worker) => {
+          if (worker.working &&
+            worker.currentTask.task === 'sell' &&
+            worker.currentTask.targetId === product.id) {
+            return accumulatedProduct + 1
+          }
+          return accumulatedProduct
+        }, 0)
+
+        const selled = (product.quantity - selling >= 0) ? selling : product.quantity
+        currentCoins += selled * product.price
+
+        return {
+          id: product.id,
+          name: product.name,
+          recipe: product.recipe,
+          quantity: product.quantity - selled,
+          price: product.price
+        }
+      })
+
+      return {
+        coins: currentCoins,
         products: newProducts
       }
     })
@@ -254,6 +294,8 @@ class App extends Component {
                 }
               })
             }} />
+          <br />
+          <div className="hoard">{this.state.coins} Coins</div>
           <br />
           <Resources
             materials={this.state.materials}

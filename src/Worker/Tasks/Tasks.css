@@ -2,10 +2,40 @@
   margin: 5px;
 }
 
-.Tasks > h4 {
-  text-align: left;
+.Tasks ul.tab-list  {
   padding: 0;
-  margin: 25px 0 5px 0;
+  cursor: pointer;
+}
+
+.Tasks ul.tab-list > li {
+  display: inline;
+  padding: 10px 20px;
+  border: 1px solid lightgray;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin: 0 -1px 0 -1px;
+}
+
+.Tasks ul.tab-list > li.selected {
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: none;
+}
+
+.App.paused .Tasks ul.tab-list > li {
+  border: 1px solid gray;
+}
+
+.App.paused .Tasks ul.tab-list > li.selected {
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: none;
+}
+
+.Tasks .inactive {
+  display: none;
 }
 
 .Tasks .button-grid {
