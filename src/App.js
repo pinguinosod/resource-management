@@ -302,6 +302,7 @@ class App extends Component {
             products={this.state.products} />
         </header>
         <main>
+          <div className="worker-grid">
           {
             this.state.workers.map(worker => {
               return <Worker
@@ -315,6 +316,7 @@ class App extends Component {
                 taskChangeHandler={(newTask) => this.taskChangeHandler(worker.id, newTask)} />
             })
           }
+          </div>
         </main>
       </div>
     )
