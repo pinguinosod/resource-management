@@ -11,20 +11,28 @@
   background-color: lightgray;
 }
 
-.TimeTrack > ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.TimeTrack > .materials-grid, .TimeTrack > .timetrack-grid {
+  display: grid;
+  grid-template-columns: 200px;
 }
 
-.TimeTrack > ul > li {
-  display: inline-block;
-  width: 80px;
-  margin: 0px 5px;
-  padding: 0px 8px;
+@media (min-width: 703px) {
+  .TimeTrack > .materials-grid, .TimeTrack > .timetrack-grid {
+    grid-template-columns: 65px 75px 65px 55px 65px;
+    grid-column-gap: 50px;
+  }
+}
+
+.TimeTrack > .materials-grid > span, .TimeTrack > .timetrack-grid > span {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+}
+
+.TimeTrack > .materials-grid > span, .TimeTrack > .timetrack-grid > span > span {
+  text-align: left;
 }
 
 .TimeTrack button {
-  margin: 10px 5px 0px 5px;
   padding: 10px;
 }

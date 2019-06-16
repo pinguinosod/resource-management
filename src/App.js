@@ -10,34 +10,92 @@ class App extends Component {
     coins: 0,
     paused: false,
     hours: 0,
-    resources: [{
+    materials: [{
       id: 1,
       name: 'Wood',
       quantity: 0
     }, {
       id: 2,
-      name: 'Rock',
+      name: 'Leather',
       quantity: 0
     }, {
       id: 3,
-      name: 'Gold',
+      name: 'Meat',
+      quantity: 0
+    }],
+    products: [{
+      id: 1,
+      name: 'Wooden Spoon',
+      recipe: [{
+        materialId: 1,
+        quantity: 2
+      }],
+      quantity: 0
+    }, {
+      id: 3,
+      name: 'Leather Jacket',
+      recipe: [{
+        materialId: 2,
+        quantity: 10
+      }],
+      quantity: 0
+    }, {
+      id: 5,
+      name: 'Frankfurter',
+      recipe: [{
+        materialId: 3,
+        quantity: 2
+      }],
+      quantity: 0
+    }, {
+      id: 2,
+      name: 'Wooden Bench',
+      recipe: [{
+        materialId: 1,
+        quantity: 10
+      }],
+      quantity: 0
+    }, {
+      id: 4,
+      name: 'Lederhosen',
+      recipe: [{
+        materialId: 2,
+        quantity: 12
+      }],
+      quantity: 0
+    }, {
+      id: 6,
+      name: 'Wiener Schnitzel',
+      recipe: [{
+        materialId: 3,
+        quantity: 3
+      }],
       quantity: 0
     }],
     workers: [{
       id: 1,
       name: 'Hugo',
       working: true,
-      gathers: 1
+      currentTask: {
+        task: 'gather',
+        targetId: 1
+      }
     }, {
       id: 2,
       name: 'Paco',
-      working: false,
-      gathers: 2
+      working: true,
+      currentTask: {
+        task: 'gather',
+        targetId: 1
+      }
     }, {
       id: 3,
       name: 'Luis',
-      working: false,
-      gathers: 3
+      working: true,
+      currentTask: {
+        task: 'produce',
+        targetId: 1
+      }
     }]
   }
 
@@ -53,30 +111,94 @@ class App extends Component {
 
   tick() {
     if (!this.state.paused) {
-      this.collectResources()
+      this.collectMaterials()
+      this.produceProducts()
       this.setState(prevState => {
         return { hours: prevState.hours + 1 }
       })
     }
   }
 
-  collectResources = () => {
+  collectMaterials = () => {
     this.setState(prevState => {
-      const newResources = prevState.resources.map((resource) => {
-        const gathered = this.state.workers.reduce((accumulatedResource, worker) => {
-          return worker.working && worker.gathers === resource.id ? accumulatedResource + 1 : accumulatedResource
+      const newMaterials = prevState.materials.map((material) => {
+        const gathered = this.state.workers.reduce((accumulatedMaterial, worker) => {
+          if (worker.working &&
+            worker.currentTask.task === 'gather' &&
+            worker.currentTask.targetId === material.id) {
+            return accumulatedMaterial + 1
+          }
+          return accumulatedMaterial
         }, 0)
         return {
-          id: resource.id,
-          name: resource.name,
-          quantity: resource.quantity + gathered
+          id: material.id,
+          name: material.name,
+          quantity: material.quantity + gathered
         }
       })
 
       return {
-        resources: newResources
+        materials: newMaterials
       }
     })
+  }
+
+  produceProducts = () => {
+    this.setState(prevState => {
+      let newMaterials = [...this.state.materials]
+      const newProducts = prevState.products.map((product) => {
+        const produced = this.state.workers.reduce((accumulatedProduct, worker) => {
+          if (worker.working &&
+            worker.currentTask.task === 'produce' &&
+            worker.currentTask.targetId === product.id
+          ) {
+            const craftingAttempt = this.craftRecipe(product.recipe, newMaterials)
+            if (craftingAttempt.success) {
+              newMaterials = craftingAttempt.newMaterials
+              return accumulatedProduct + 1
+            }
+          }
+          return accumulatedProduct
+        }, 0)
+        return {
+          id: product.id,
+          name: product.name,
+          recipe: product.recipe,
+          quantity: product.quantity + produced
+        }
+      })
+
+      return {
+        materials: newMaterials,
+        products: newProducts
+      }
+    })
+  }
+
+  craftRecipe = (recipe, currentMaterials) => {
+    let enoughMaterials = true
+    let newMaterials = [...currentMaterials]
+    recipe.map(requiredMaterial => {
+      newMaterials = newMaterials.map(material => {
+        if (material.id === requiredMaterial.materialId &&
+          requiredMaterial.quantity > material.quantity) {
+          enoughMaterials = false
+        }
+        else if (material.id === requiredMaterial.materialId) {
+          return {
+            id: material.id,
+            name: material.name,
+            quantity: material.quantity - requiredMaterial.quantity
+          }
+        }
+        return material
+      })
+      return requiredMaterial
+    })
+    return {
+      success: enoughMaterials,
+      newMaterials
+    }
   }
 
   workToggleHandler = (id) => {
@@ -88,7 +210,7 @@ class App extends Component {
               id: worker.id,
               name: worker.name,
               working: !worker.working,
-              gathers: worker.gathers
+              currentTask: worker.currentTask
             }
           } else {
             return worker
@@ -98,7 +220,7 @@ class App extends Component {
     })
   }
 
-  taskChangeHandler = (workerId, resourceId) => {
+  taskChangeHandler = (workerId, newTask) => {
     this.setState(prevState => {
       return {
         workers: prevState.workers.map((worker) => {
@@ -107,7 +229,7 @@ class App extends Component {
               id: worker.id,
               name: worker.name,
               working: worker.working,
-              gathers: resourceId
+              currentTask: newTask
             }
           } else {
             return worker
@@ -122,7 +244,8 @@ class App extends Component {
       <div className={this.state.paused ? 'App paused' : 'App'}>
         <header>
           <h1>Resource Management</h1>
-          <TimeTrack paused={this.state.paused}
+          <TimeTrack
+            paused={this.state.paused}
             hours={this.state.hours}
             pauseToggleHandler={() => {
               this.setState(prevState => {
@@ -132,7 +255,9 @@ class App extends Component {
               })
             }} />
           <br />
-          <Resources resources={this.state.resources} />
+          <Resources
+            materials={this.state.materials}
+            products={this.state.products} />
         </header>
         <main>
           {
@@ -141,11 +266,11 @@ class App extends Component {
                 key={worker.id}
                 name={worker.name}
                 working={worker.working}
-                gathers={worker.gathers}
-                resources={this.state.resources}
+                currentTask={worker.currentTask}
+                materials={this.state.materials}
+                products={this.state.products}
                 workToggleHandler={() => this.workToggleHandler(worker.id)}
-                taskChangeHandler={(resourceId) => this.taskChangeHandler(worker.id, resourceId)}>
-              </Worker>
+                taskChangeHandler={(newTask) => this.taskChangeHandler(worker.id, newTask)} />
             })
           }
         </main>

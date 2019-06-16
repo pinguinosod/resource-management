@@ -7,8 +7,9 @@ const Worker = (props) => {
     <div className={props.working ? 'Worker active' : 'Worker idle'}>
       <h2>{props.name}</h2>
       <Tasks
-        gathers={props.gathers}
-        resources={props.resources}
+        currentTask={props.currentTask}
+        materials={props.materials}
+        products={props.products}
         working={props.working}
         taskChangeHandler={props.taskChangeHandler} 
         workToggleHandler={props.workToggleHandler}/>

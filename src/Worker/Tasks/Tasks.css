@@ -2,9 +2,20 @@
   margin: 5px;
 }
 
+.Tasks > h4 {
+  text-align: left;
+  padding: 0;
+  margin: 25px 0 5px 0;
+}
+
+.Tasks .button-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
 .Tasks button {
-  height: 50px;
-  width: 70px;
+  height: 54px;
+  width: 96px;
   margin: 0;
   padding: 10px 10px;
 }

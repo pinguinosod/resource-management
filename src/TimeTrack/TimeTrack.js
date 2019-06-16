@@ -62,13 +62,24 @@ const TimeTrack = (props) => {
 
   return (
     <div className="TimeTrack">
-      <ul>
-        <li>Year: {timeElapsedObject.years}</li>
-        <li>Month: {timeElapsedObject.months}</li>
-        <li>Week: {timeElapsedObject.weeks}</li>
-        <li>Day: {timeElapsedObject.days}</li>
-        <li>Hour: {timeElapsedObject.hours}</li>
-      </ul>
+      <div className="timetrack-grid">
+        <span>
+          <span>Year:</span><span>{timeElapsedObject.years + 1}</span>
+        </span>
+        <span>
+          <span>Month:</span><span>{timeElapsedObject.months + 1}</span>
+        </span>
+        <span>
+          <span>Week:</span><span>{timeElapsedObject.weeks + 1}</span>
+        </span>
+        <span>
+          <span>Day:</span><span>{timeElapsedObject.days + 1}</span>
+        </span>
+        <span>
+          <span>Hour:</span><span>{timeElapsedObject.hours + 1}</span>
+        </span>
+      </div>
+      <hr />
       <button onClick={props.pauseToggleHandler}>
         {props.paused ? 'Resume' : 'Pause'}
       </button>

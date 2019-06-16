@@ -11,15 +11,24 @@
   background-color: lightgray;
 }
 
-.Resources > ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.Resources > .materials-grid, .Resources > .products-grid {
+  display: grid;
+  grid-template-columns: 200px;
 }
 
-.Resources > ul > li {
-  display: inline-block;
-  width: 150px;
-  margin: 0px 5px;
-  padding: 0px 8px;
+@media (min-width: 703px) {
+  .Resources > .materials-grid, .Resources > .products-grid {
+    grid-template-columns: 180px 190px 200px;
+    grid-column-gap: 50px;
+  }
+}
+
+.Resources > .materials-grid > span, .Resources > .products-grid > span {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+}
+
+.Resources > .materials-grid > span, .Resources > .products-grid > span > span {
+  text-align: left;
 }
