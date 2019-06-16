@@ -13,15 +13,15 @@ class App extends Component {
     materials: [{
       id: 1,
       name: 'Wood',
-      quantity: 0
+      stock: 0
     }, {
       id: 2,
       name: 'Leather',
-      quantity: 0
+      stock: 0
     }, {
       id: 3,
       name: 'Meat',
-      quantity: 0
+      stock: 0
     }],
     products: [{
       id: 1,
@@ -30,7 +30,7 @@ class App extends Component {
         materialId: 1,
         quantity: 2
       }],
-      quantity: 0,
+      stock: 0,
       price: 3
     }, {
       id: 3,
@@ -39,7 +39,7 @@ class App extends Component {
         materialId: 2,
         quantity: 10
       }],
-      quantity: 0,
+      stock: 0,
       price: 16
     }, {
       id: 5,
@@ -48,7 +48,7 @@ class App extends Component {
         materialId: 3,
         quantity: 2
       }],
-      quantity: 0,
+      stock: 0,
       price: 3
     }, {
       id: 2,
@@ -57,7 +57,7 @@ class App extends Component {
         materialId: 1,
         quantity: 10
       }],
-      quantity: 0,
+      stock: 0,
       price: 16
     }, {
       id: 4,
@@ -66,7 +66,7 @@ class App extends Component {
         materialId: 2,
         quantity: 12
       }],
-      quantity: 0,
+      stock: 0,
       price: 21
     }, {
       id: 6,
@@ -75,7 +75,7 @@ class App extends Component {
         materialId: 3,
         quantity: 3
       }],
-      quantity: 0,
+      stock: 0,
       price: 5
     }],
     workers: [{
@@ -140,7 +140,7 @@ class App extends Component {
         return {
           id: material.id,
           name: material.name,
-          quantity: material.quantity + gathered
+          stock: material.stock + gathered
         }
       })
 
@@ -171,7 +171,7 @@ class App extends Component {
           id: product.id,
           name: product.name,
           recipe: product.recipe,
-          quantity: product.quantity + produced,
+          stock: product.stock + produced,
           price: product.price
         }
       })
@@ -196,14 +196,14 @@ class App extends Component {
           return accumulatedProduct
         }, 0)
 
-        const selled = (product.quantity - selling >= 0) ? selling : product.quantity
+        const selled = (product.stock - selling >= 0) ? selling : product.stock
         currentCoins += selled * product.price
 
         return {
           id: product.id,
           name: product.name,
           recipe: product.recipe,
-          quantity: product.quantity - selled,
+          stock: product.stock - selled,
           price: product.price
         }
       })
@@ -221,14 +221,14 @@ class App extends Component {
     recipe.map(requiredMaterial => {
       newMaterials = newMaterials.map(material => {
         if (material.id === requiredMaterial.materialId &&
-          requiredMaterial.quantity > material.quantity) {
+          requiredMaterial.quantity > material.stock) {
           enoughMaterials = false
         }
         else if (material.id === requiredMaterial.materialId) {
           return {
             id: material.id,
             name: material.name,
-            quantity: material.quantity - requiredMaterial.quantity
+            stock: material.stock - requiredMaterial.quantity
           }
         }
         return material

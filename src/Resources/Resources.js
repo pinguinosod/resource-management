@@ -10,7 +10,7 @@ const Resources = (props) => {
           props.materials.map(material => {
             return <span key={material.id}>
               <span>{material.name}:</span>
-              <span className="value">{material.quantity}</span>
+              <span className="value">{material.stock}</span>
             </span>
           })
         }
@@ -21,7 +21,7 @@ const Resources = (props) => {
           props.products.map(product => {
             return <span key={product.id}>
               <span>{product.name}:</span>
-              <span className="value">{product.quantity}</span>
+              <span className="value">{product.stock}</span>
             </span>
           })
         }
