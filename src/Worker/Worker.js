@@ -31,6 +31,8 @@ const Worker = (props) => {
         materials={props.materials}
         products={props.products}
         working={props.working}
+        loading={props.loading}
+        paused={props.paused}
         taskChangeHandler={props.taskChangeHandler}
         workToggleHandler={props.workToggleHandler} />
     </div>

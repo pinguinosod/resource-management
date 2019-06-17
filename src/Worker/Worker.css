@@ -1,14 +1,14 @@
 .Worker {
   display: inline-block;
   border: 1px solid;
-  width: 300px;
-  padding: 0 10px 20px;
+  width: 330px;
+  padding: 0;
   margin: 10px;
   border-radius: 2px;
 }
 
 .Worker .current-task {
-  text-transform: capitalize
+  text-transform: capitalize;
 }
 
 .App.paused .Worker.active {
@@ -22,8 +22,8 @@
 }
 
 .Worker.active {
-  border-color: greenyellow;
-  box-shadow: 0 1px 2px greenyellow;
+  border-color: lightgray;
+  box-shadow: 0 1px 2px lightgray;
 }
 
 .Worker.idle {

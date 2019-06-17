@@ -10,6 +10,8 @@ class App extends Component {
     coins: 0,
     paused: false,
     hours: 0,
+    loading: false,
+    gotNewCoins: false,
     materials: [{
       id: 1,
       name: 'Wood',
@@ -117,12 +119,12 @@ class App extends Component {
 
   tick() {
     if (!this.state.paused) {
+      const coinsAtStart = this.state.coins;
+      this.setState({ loading: true, gotNewCoins: false });
       this.collectMaterials()
       this.produceProducts()
       this.sellProducts()
-      this.setState(prevState => {
-        return { hours: prevState.hours + 1 }
-      })
+      this.setState({ hours: this.state.hours + 1, loading: false, gotNewCoins: this.state.coins > coinsAtStart })
     }
   }
 
@@ -279,6 +281,15 @@ class App extends Component {
     })
   }
 
+  calculateCoinsSize = (coins) => {
+    if (coins > 999999) return '3.5rem'
+    if (coins > 99999) return '3.0rem'
+    if (coins > 9999) return '2.5rem'
+    if (coins > 999) return '2.0rem'
+    if (coins > 99) return '1.5rem'
+    if (coins > 9) return '1.1rem'
+  }
+
   render() {
     return (
       <div className={this.state.paused ? 'App paused' : 'App'}>
@@ -295,7 +306,8 @@ class App extends Component {
               })
             }} />
           <br />
-          <div className="hoard"><span>{this.state.coins}</span> Coins</div>
+          <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
+            <span style={{fontSize: this.calculateCoinsSize(this.state.coins)}}>{this.state.coins}</span> Coins</div>
           <br />
           <Resources
             materials={this.state.materials}
@@ -303,19 +315,21 @@ class App extends Component {
         </header>
         <main>
           <div className="worker-grid">
-          {
-            this.state.workers.map(worker => {
-              return <Worker
-                key={worker.id}
-                name={worker.name}
-                working={worker.working}
-                currentTask={worker.currentTask}
-                materials={this.state.materials}
-                products={this.state.products}
-                workToggleHandler={() => this.workToggleHandler(worker.id)}
-                taskChangeHandler={(newTask) => this.taskChangeHandler(worker.id, newTask)} />
-            })
-          }
+            {
+              this.state.workers.map(worker => {
+                return <Worker
+                  key={worker.id}
+                  name={worker.name}
+                  working={worker.working}
+                  currentTask={worker.currentTask}
+                  materials={this.state.materials}
+                  products={this.state.products}
+                  loading={this.state.loading}
+                  paused={this.state.paused}
+                  workToggleHandler={() => this.workToggleHandler(worker.id)}
+                  taskChangeHandler={(newTask) => this.taskChangeHandler(worker.id, newTask)} />
+              })
+            }
           </div>
         </main>
       </div>

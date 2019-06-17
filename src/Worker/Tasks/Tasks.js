@@ -4,15 +4,28 @@ import './Tasks.css'
 const Tasks = (props) => {
   const [currentTab, setCurrentTab] = useState(props.currentTask.task);
 
+  const showCurrentTaskMark = (taskName) => {
+    return !props.paused && props.working && !props.loading && props.currentTask.task === taskName
+  }
+
   return (
     <div className="Tasks">
       <ul className="tab-list">
         <li className={currentTab === 'gather' ? 'selected' : ''}
-          onClick={() => { setCurrentTab('gather') }}>Gather</li>
+          onClick={() => { setCurrentTab('gather') }}>
+          {showCurrentTaskMark('gather') ? <span className="current-task-mark"></span> : ''}
+          Gather
+        </li>
         <li className={currentTab === 'produce' ? 'selected' : ''}
-          onClick={() => { setCurrentTab('produce') }}>Produce</li>
+          onClick={() => { setCurrentTab('produce') }}>
+          {showCurrentTaskMark('produce') ? <span className="current-task-mark"></span> : ''}
+          Produce
+        </li>
         <li className={currentTab === 'sell' ? 'selected' : ''}
-          onClick={() => { setCurrentTab('sell') }}>Sell</li>
+          onClick={() => { setCurrentTab('sell') }}>
+          {showCurrentTaskMark('sell') ? <span className="current-task-mark"></span> : ''}
+          Sell
+        </li>
       </ul>
       <div className="tab-wrapper">
         <div className={currentTab === 'gather' ? 'active' : 'inactive'}>
