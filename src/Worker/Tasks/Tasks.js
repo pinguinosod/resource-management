@@ -32,17 +32,17 @@ const Tasks = (props) => {
       <ul className="tab-list">
         <li className={currentTab === 'gather' ? 'selected' : ''}
           onClick={() => { setCurrentTab('gather') }}>
-          {showCurrentTaskMark('gather') ? <span className="current-task-mark"><span></span></span> : ""}
+          {showCurrentTaskMark('gather') ? <span className="current-task-mark"></span> : ""}
           Gather
         </li>
         <li className={currentTab === 'produce' ? 'selected' : ''}
           onClick={() => { setCurrentTab('produce') }}>
-          {showCurrentTaskMark('produce') ? <span className="current-task-mark"><span></span></span> : ""}
+          {showCurrentTaskMark('produce') ? <span className="current-task-mark"></span> : ""}
           Produce
         </li>
         <li className={currentTab === 'sell' ? 'selected' : ''}
           onClick={() => { setCurrentTab('sell') }}>
-          {showCurrentTaskMark('sell') ? <span className="current-task-mark"><span></span></span> : ""}
+          {showCurrentTaskMark('sell') ? <span className="current-task-mark"></span> : ""}
           Sell
         </li>
       </ul>
