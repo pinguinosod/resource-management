@@ -1,3 +1,7 @@
+.Worker .current-task {
+  text-transform: capitalize;
+}
+
 .Tasks ul.tab-list  {
   display: flex;
   justify-content: space-between;

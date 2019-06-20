@@ -4,26 +4,45 @@ import './Tasks.css'
 const Tasks = (props) => {
   const [currentTab, setCurrentTab] = useState(props.currentTask.task);
 
+  const getTaskTargetName = (currentTask) => {
+    if (currentTask.task === 'gather') {
+      return props.materials.filter(material => material.id === currentTask.targetId)[0].name
+    }
+    return props.products.filter(product => product.id === currentTask.targetId)[0].name
+  }
+
+  const currentTaskName = () => {
+    if (!props.working) {
+      return 'Resting'
+    }
+    if (props.currentTask.task === "produce") {
+      return 'producing ' + getTaskTargetName(props.currentTask)
+    }
+    return props.currentTask.task + 'ing ' + getTaskTargetName(props.currentTask)
+  }
+
   const showCurrentTaskMark = (taskName) => {
     return !props.paused && props.working && !props.loading && props.currentTask.task === taskName
   }
 
   return (
     <div className="Tasks">
+      <div className="current-task">{currentTaskName()}</div>
+      <br />
       <ul className="tab-list">
         <li className={currentTab === 'gather' ? 'selected' : ''}
           onClick={() => { setCurrentTab('gather') }}>
-          {showCurrentTaskMark('gather') ? <span className="current-task-mark"></span> : ''}
+          {showCurrentTaskMark('gather') ? <span className="current-task-mark"><span></span></span> : ""}
           Gather
         </li>
         <li className={currentTab === 'produce' ? 'selected' : ''}
           onClick={() => { setCurrentTab('produce') }}>
-          {showCurrentTaskMark('produce') ? <span className="current-task-mark"></span> : ''}
+          {showCurrentTaskMark('produce') ? <span className="current-task-mark"><span></span></span> : ""}
           Produce
         </li>
         <li className={currentTab === 'sell' ? 'selected' : ''}
           onClick={() => { setCurrentTab('sell') }}>
-          {showCurrentTaskMark('sell') ? <span className="current-task-mark"></span> : ''}
+          {showCurrentTaskMark('sell') ? <span className="current-task-mark"><span></span></span> : ""}
           Sell
         </li>
       </ul>

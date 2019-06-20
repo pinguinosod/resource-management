@@ -102,7 +102,7 @@ class App extends Component {
       working: true,
       currentTask: {
         task: 'gather',
-        targetId: 2
+        targetId: 1
       }
     }]
   }
@@ -121,54 +121,39 @@ class App extends Component {
     if (!this.state.paused) {
       const coinsAtStart = this.state.coins;
       this.setState({ loading: true, gotNewCoins: false });
-      this.collectMaterials()
-      this.produceProducts()
-      this.sellProducts()
+      this.doLabor()
       this.setState({ hours: this.state.hours + 1, loading: false, gotNewCoins: this.state.coins > coinsAtStart })
     }
   }
 
-  collectMaterials = () => {
-    this.setState(prevState => {
-      const newMaterials = prevState.materials.map((material) => {
-        const gathered = this.state.workers.reduce((accumulatedMaterial, worker) => {
-          if (worker.working &&
-            worker.currentTask.task === 'gather' &&
-            worker.currentTask.targetId === material.id) {
-            return accumulatedMaterial + 1
-          }
-          return accumulatedMaterial
-        }, 0)
+  gatherMaterial = (materialId, materials) => {
+    const updatedMaterials = materials.map((material) => {
+      if (material.id === materialId) {
         return {
           id: material.id,
           name: material.name,
-          stock: material.stock + gathered
+          stock: material.stock + 1
         }
-      })
-
-      return {
-        materials: newMaterials
       }
+      return material
     })
+
+    return {
+      updatedMaterials
+    }
   }
 
-  produceProducts = () => {
-    this.setState(prevState => {
-      let newMaterials = [...this.state.materials]
-      const newProducts = prevState.products.map((product) => {
-        const produced = this.state.workers.reduce((accumulatedProduct, worker) => {
-          if (worker.working &&
-            worker.currentTask.task === 'produce' &&
-            worker.currentTask.targetId === product.id
-          ) {
-            const craftingAttempt = this.craftRecipe(product.recipe, newMaterials)
-            if (craftingAttempt.success) {
-              newMaterials = craftingAttempt.newMaterials
-              return accumulatedProduct + 1
-            }
-          }
-          return accumulatedProduct
-        }, 0)
+  produceProduct = (productId, products, materials) => {
+    let updatedMaterials = [...materials]
+    const updatedProducts = products.map((product) => {
+      if (product.id === productId) {
+        let produced = 0
+        const craftingAttempt = this.craftRecipe(product.recipe, updatedMaterials)
+        if (craftingAttempt.success) {
+          updatedMaterials = craftingAttempt.updatedMaterials
+          produced++
+        }
+
         return {
           id: product.id,
           name: product.name,
@@ -176,52 +161,84 @@ class App extends Component {
           stock: product.stock + produced,
           price: product.price
         }
-      })
-
-      return {
-        materials: newMaterials,
-        products: newProducts
       }
+      return product
     })
+
+    return {
+      updatedProducts,
+      updatedMaterials
+    }
   }
 
-  sellProducts = () => {
-    this.setState(prevState => {
-      let currentCoins = this.state.coins
-      const newProducts = prevState.products.map((product) => {
-        const selling = this.state.workers.reduce((accumulatedProduct, worker) => {
-          if (worker.working &&
-            worker.currentTask.task === 'sell' &&
-            worker.currentTask.targetId === product.id) {
-            return accumulatedProduct + 1
-          }
-          return accumulatedProduct
-        }, 0)
-
-        const selled = (product.stock - selling >= 0) ? selling : product.stock
-        currentCoins += selled * product.price
+  sellProduct = (productId, updatedCoins, products) => {
+    const updatedProducts = products.map((product) => {
+      if (product.id === productId) {
+        let newStock = product.stock
+        if (product.stock > 0) {
+          updatedCoins += product.price
+          newStock--
+        }
 
         return {
           id: product.id,
           name: product.name,
           recipe: product.recipe,
-          stock: product.stock - selled,
-          price: product.price
+          stock: newStock,
+          price: product.price,
+          taskEffort: product.taskEffort
         }
+      }
+      return product
+    })
+
+    return {
+      updatedCoins,
+      updatedProducts
+    }
+  }
+
+  doLabor = () => {
+    this.setState(prevState => {
+      let updatedMaterials = [...prevState.materials]
+      let updatedProducts = [...prevState.products]
+      let updatedCoins = prevState.coins
+      const updatedWorkers = prevState.workers.map((worker) => {
+        if (worker.working) {
+          if (worker.currentTask.task === 'gather') {
+            ({ updatedMaterials} = this.gatherMaterial(worker.currentTask.targetId, updatedMaterials))
+          } else if (worker.currentTask.task === 'produce') {
+            ({ updatedProducts, updatedMaterials } = this.produceProduct(worker.currentTask.targetId, updatedProducts, updatedMaterials))
+          } else if (worker.currentTask.task === 'sell') {
+            ({ updatedCoins, updatedProducts } = this.sellProduct(worker.currentTask.targetId, updatedCoins, updatedProducts))
+          }
+          return {
+            id: worker.id,
+            name: worker.name,
+            working: worker.working,
+            currentTask: {
+              task: worker.currentTask.task,
+              targetId: worker.currentTask.targetId
+            }
+          }
+        }
+        return worker
       })
 
       return {
-        coins: currentCoins,
-        products: newProducts
+        coins: updatedCoins,
+        materials: updatedMaterials,
+        products: updatedProducts,
+        workers: updatedWorkers
       }
     })
   }
 
   craftRecipe = (recipe, currentMaterials) => {
     let enoughMaterials = true
-    let newMaterials = [...currentMaterials]
+    let updatedMaterials = [...currentMaterials]
     recipe.map(requiredMaterial => {
-      newMaterials = newMaterials.map(material => {
+      updatedMaterials = updatedMaterials.map(material => {
         if (material.id === requiredMaterial.materialId &&
           requiredMaterial.quantity > material.stock) {
           enoughMaterials = false
@@ -230,7 +247,8 @@ class App extends Component {
           return {
             id: material.id,
             name: material.name,
-            stock: material.stock - requiredMaterial.quantity
+            stock: material.stock - requiredMaterial.quantity,
+            taskEffort: material.taskEffort
           }
         }
         return material
@@ -238,8 +256,8 @@ class App extends Component {
       return requiredMaterial
     })
     return {
-      success: enoughMaterials,
-      newMaterials
+      updatedMaterials,
+      success: enoughMaterials
     }
   }
 
@@ -283,11 +301,17 @@ class App extends Component {
 
   calculateCoinsSize = (coins) => {
     if (coins > 999999) return '3.5rem'
+    if (coins > 499999) return '3.2rem'
     if (coins > 99999) return '3.0rem'
+    if (coins > 49999) return '2.7rem'
     if (coins > 9999) return '2.5rem'
+    if (coins > 4999) return '2.2rem'
     if (coins > 999) return '2.0rem'
+    if (coins > 499) return '1.7rem'
     if (coins > 99) return '1.5rem'
+    if (coins > 49) return '1.2rem'
     if (coins > 9) return '1.1rem'
+    return '1.0rem'
   }
 
   render() {
@@ -307,7 +331,7 @@ class App extends Component {
             }} />
           <br />
           <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
-            <span style={{fontSize: this.calculateCoinsSize(this.state.coins)}}>{this.state.coins}</span> Coins</div>
+            <span style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins}</span> Coins</div>
           <br />
           <Resources
             materials={this.state.materials}
