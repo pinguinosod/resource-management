@@ -11,6 +11,7 @@ class App extends Component {
     paused: false,
     hours: 0,
     loading: false,
+    gameOver: false,
     gotNewCoins: false,
     materials: [{
       id: 1,
@@ -33,7 +34,7 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 3
+      price: 30
     }, {
       id: 3,
       name: 'Leather Jacket',
@@ -42,7 +43,7 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 16
+      price: 160
     }, {
       id: 5,
       name: 'Frankfurter',
@@ -51,7 +52,7 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 3
+      price: 30
     }, {
       id: 2,
       name: 'Wooden Bench',
@@ -60,7 +61,7 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 16
+      price: 160
     }, {
       id: 4,
       name: 'Lederhosen',
@@ -69,7 +70,7 @@ class App extends Component {
         quantity: 12
       }],
       stock: 0,
-      price: 21
+      price: 210
     }, {
       id: 6,
       name: 'Wiener Schnitzel',
@@ -78,12 +79,13 @@ class App extends Component {
         quantity: 3
       }],
       stock: 0,
-      price: 5
+      price: 50
     }],
     workers: [{
       id: 1,
       name: 'Hugo',
       working: true,
+      salary: 1000,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -92,6 +94,7 @@ class App extends Component {
       id: 2,
       name: 'Paco',
       working: true,
+      salary: 1000,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -100,6 +103,7 @@ class App extends Component {
       id: 3,
       name: 'Luis',
       working: true,
+      salary: 1000,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -122,8 +126,20 @@ class App extends Component {
       const coinsAtStart = this.state.coins;
       this.setState({ loading: true, gotNewCoins: false });
       this.doLabor()
+      if (this.state.hours > 0 && this.hrsTillNextMonth(this.state.hours) === 0) this.paySalaries()
       this.setState({ hours: this.state.hours + 1, loading: false, gotNewCoins: this.state.coins > coinsAtStart })
+      this.checkGameOver()
     }
+  }
+
+  checkGameOver() {
+    if (this.state.coins < 0) {
+      this.setState({ gameOver: true, paused: true })
+    }
+  }
+
+  paySalaries = () => {
+    this.setState({ coins: this.state.coins - this.sumSalaries(this.state.workers) })
   }
 
   gatherMaterial = (materialId, materials) => {
@@ -206,7 +222,7 @@ class App extends Component {
       const updatedWorkers = prevState.workers.map((worker) => {
         if (worker.working) {
           if (worker.currentTask.task === 'gather') {
-            ({ updatedMaterials} = this.gatherMaterial(worker.currentTask.targetId, updatedMaterials))
+            ({ updatedMaterials } = this.gatherMaterial(worker.currentTask.targetId, updatedMaterials))
           } else if (worker.currentTask.task === 'produce') {
             ({ updatedProducts, updatedMaterials } = this.produceProduct(worker.currentTask.targetId, updatedProducts, updatedMaterials))
           } else if (worker.currentTask.task === 'sell') {
@@ -216,6 +232,7 @@ class App extends Component {
             id: worker.id,
             name: worker.name,
             working: worker.working,
+            salary: worker.salary,
             currentTask: {
               task: worker.currentTask.task,
               targetId: worker.currentTask.targetId
@@ -270,6 +287,7 @@ class App extends Component {
               id: worker.id,
               name: worker.name,
               working: !worker.working,
+              salary: worker.salary,
               currentTask: worker.currentTask
             }
           } else {
@@ -289,6 +307,7 @@ class App extends Component {
               id: worker.id,
               name: worker.name,
               working: worker.working,
+              salary: worker.salary,
               currentTask: newTask
             }
           } else {
@@ -300,18 +319,34 @@ class App extends Component {
   }
 
   calculateCoinsSize = (coins) => {
-    if (coins > 999999) return '3.5rem'
-    if (coins > 499999) return '3.2rem'
-    if (coins > 99999) return '3.0rem'
-    if (coins > 49999) return '2.7rem'
-    if (coins > 9999) return '2.5rem'
-    if (coins > 4999) return '2.2rem'
-    if (coins > 999) return '2.0rem'
-    if (coins > 499) return '1.7rem'
-    if (coins > 99) return '1.5rem'
-    if (coins > 49) return '1.2rem'
-    if (coins > 9) return '1.1rem'
+    if (coins > 9999999) return '3.5rem'
+    if (coins > 4999999) return '3.2rem'
+    if (coins > 999999) return '3.0rem'
+    if (coins > 499999) return '2.7rem'
+    if (coins > 99999) return '2.5rem'
+    if (coins > 49999) return '2.2rem'
+    if (coins > 9999) return '2.0rem'
+    if (coins > 4999) return '1.7rem'
+    if (coins > 999) return '1.5rem'
+    if (coins > 499) return '1.2rem'
+    if (coins > 99) return '1.1rem'
     return '1.0rem'
+  }
+
+  sumSalaries = (workers) => {
+    return workers.reduce((totalSalaries, worker) => totalSalaries + worker.salary, 0)
+  }
+
+  hrsTillNextMonth = (hrs) => {
+    return (Math.ceil(hrs / 160) * 160) - hrs
+  }
+
+  coinsEndMonth = (coins, workers) => {
+    return coins - this.sumSalaries(workers)
+  }
+
+  toSatoshis = (coins) => {
+    return (coins * 0.00000001).toFixed(8);
   }
 
   render() {
@@ -321,6 +356,7 @@ class App extends Component {
           <h1>Resource Management</h1>
           <TimeTrack
             paused={this.state.paused}
+            gameOver={this.state.gameOver}
             hours={this.state.hours}
             pauseToggleHandler={() => {
               this.setState(prevState => {
@@ -331,7 +367,11 @@ class App extends Component {
             }} />
           <br />
           <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
-            <span style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins}</span> Coins</div>
+            <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>₿ {this.toSatoshis(this.state.coins)}</div>
+            <div><span>Monthly Salaries:</span><span>₿ {this.toSatoshis(this.sumSalaries(this.state.workers))}</span></div>
+            <div><span>End Of Month:</span><span>₿ {this.toSatoshis(this.coinsEndMonth(this.state.coins, this.state.workers))}</span></div>
+            <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} hrs</span></div>
+          </div>
           <br />
           <Resources
             materials={this.state.materials}

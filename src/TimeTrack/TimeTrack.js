@@ -80,8 +80,8 @@ const TimeTrack = (props) => {
         </span>
       </div>
       <hr />
-      <button onClick={props.pauseToggleHandler}>
-        {props.paused ? 'Resume' : 'Pause'}
+      <button onClick={props.pauseToggleHandler} disabled={props.gameOver}>
+        {props.gameOver ? 'Game Over!' : props.paused ? 'Resume' : 'Pause'}
       </button>
     </div>
   )
