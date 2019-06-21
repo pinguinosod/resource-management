@@ -34,7 +34,7 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 30
+      price: 3
     }, {
       id: 3,
       name: 'Leather Jacket',
@@ -43,7 +43,7 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 160
+      price: 16
     }, {
       id: 5,
       name: 'Frankfurter',
@@ -52,7 +52,7 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 30
+      price: 3
     }, {
       id: 2,
       name: 'Wooden Bench',
@@ -61,7 +61,7 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 160
+      price: 16
     }, {
       id: 4,
       name: 'Lederhosen',
@@ -70,7 +70,7 @@ class App extends Component {
         quantity: 12
       }],
       stock: 0,
-      price: 210
+      price: 21
     }, {
       id: 6,
       name: 'Wiener Schnitzel',
@@ -79,13 +79,13 @@ class App extends Component {
         quantity: 3
       }],
       stock: 0,
-      price: 50
+      price: 5
     }],
     workers: [{
       id: 1,
       name: 'Hugo',
       working: true,
-      salary: 1000,
+      salary: 100,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -94,7 +94,7 @@ class App extends Component {
       id: 2,
       name: 'Paco',
       working: true,
-      salary: 1000,
+      salary: 100,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -103,7 +103,7 @@ class App extends Component {
       id: 3,
       name: 'Luis',
       working: true,
-      salary: 1000,
+      salary: 100,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -319,17 +319,17 @@ class App extends Component {
   }
 
   calculateCoinsSize = (coins) => {
-    if (coins > 9999999) return '3.5rem'
-    if (coins > 4999999) return '3.2rem'
-    if (coins > 999999) return '3.0rem'
-    if (coins > 499999) return '2.7rem'
-    if (coins > 99999) return '2.5rem'
-    if (coins > 49999) return '2.2rem'
-    if (coins > 9999) return '2.0rem'
-    if (coins > 4999) return '1.7rem'
-    if (coins > 999) return '1.5rem'
-    if (coins > 499) return '1.2rem'
-    if (coins > 99) return '1.1rem'
+    if (coins > 999999) return '3.5rem'
+    if (coins > 499999) return '3.2rem'
+    if (coins > 99999) return '3.0rem'
+    if (coins > 49999) return '2.7rem'
+    if (coins > 9999) return '2.5rem'
+    if (coins > 4999) return '2.2rem'
+    if (coins > 999) return '2.0rem'
+    if (coins > 499) return '1.7rem'
+    if (coins > 99) return '1.5rem'
+    if (coins > 49) return '1.2rem'
+    if (coins > 9) return '1.1rem'
     return '1.0rem'
   }
 
@@ -343,10 +343,6 @@ class App extends Component {
 
   coinsEndMonth = (coins, workers) => {
     return coins - this.sumSalaries(workers)
-  }
-
-  toSatoshis = (coins) => {
-    return (coins * 0.00000001).toFixed(8);
   }
 
   render() {
@@ -367,10 +363,10 @@ class App extends Component {
             }} />
           <br />
           <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
-            <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>₿ {this.toSatoshis(this.state.coins)}</div>
-            <div><span>Monthly Salaries:</span><span>₿ {this.toSatoshis(this.sumSalaries(this.state.workers))}</span></div>
-            <div><span>End Of Month:</span><span>₿ {this.toSatoshis(this.coinsEndMonth(this.state.coins, this.state.workers))}</span></div>
-            <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} hrs</span></div>
+            <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins} CHA</div>
+            <div><span>Monthly Salaries:</span><span>{this.sumSalaries(this.state.workers)} CHA</span></div>
+            <div><span>End Of Month:</span><span>{this.coinsEndMonth(this.state.coins, this.state.workers)} CHA</span></div>
+            <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} HRS</span></div>
           </div>
           <br />
           <Resources
