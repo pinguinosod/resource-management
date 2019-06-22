@@ -63,26 +63,29 @@ const TimeTrack = (props) => {
   return (
     <div className="TimeTrack">
       <div className="timetrack-grid">
-        <span>
-          <span>Year:</span><span>{timeElapsedObject.years + 1}</span>
-        </span>
-        <span>
-          <span>Month:</span><span>{timeElapsedObject.months + 1}</span>
-        </span>
-        <span>
-          <span>Week:</span><span>{timeElapsedObject.weeks + 1}</span>
-        </span>
-        <span>
-          <span>Day:</span><span>{timeElapsedObject.days + 1}</span>
-        </span>
-        <span>
-          <span>Hour:</span><span>{timeElapsedObject.hours + 1}</span>
-        </span>
+        <div>
+          <span>
+            <span>Year:</span><span>{timeElapsedObject.years + 1}</span>
+          </span>
+          <span>
+            <span>Month:</span><span>{timeElapsedObject.months + 1}</span>
+          </span>
+          <span>
+            <span>Week:</span><span>{timeElapsedObject.weeks + 1}</span>
+          </span>
+          <span>
+            <span>Day:</span><span>{timeElapsedObject.days + 1}</span>
+          </span>
+          <span>
+            <span>Hour:</span><span>{timeElapsedObject.hours + 1}</span>
+          </span>
+        </div>
+        <div>
+          <button onClick={props.pauseToggleHandler} disabled={props.gameOver}>
+            {props.gameOver ? 'Game Over!' : props.paused ? 'Resume' : 'Pause'}
+          </button>
+        </div>
       </div>
-      <hr />
-      <button onClick={props.pauseToggleHandler} disabled={props.gameOver}>
-        {props.gameOver ? 'Game Over!' : props.paused ? 'Resume' : 'Pause'}
-      </button>
     </div>
   )
 }

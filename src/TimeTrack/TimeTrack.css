@@ -1,36 +1,63 @@
 .TimeTrack {
   display: inline-block;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  margin: 10px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: 0;
+  margin: 0 0 5px 0;
+  box-shadow: 0 1px 2px lightgray;
+}
+
+.TimeTrack > div {
   padding: 15px;
-  box-shadow: 0 1px 2px #ccc;
+}
+
+@media (min-width: 420px) {
+  .TimeTrack {
+    border: 1px solid lightgray;
+    border-radius: 2px;
+  }
+}
+
+@media (min-width: 703px) {
+  .TimeTrack {
+    width: 680px;
+    margin: 0 0 10px 2px;
+  }
 }
 
 .App.paused .TimeTrack {
   background-color: lightgray;
 }
 
-.TimeTrack > .materials-grid, .TimeTrack > .timetrack-grid {
+.TimeTrack .timetrack-grid {
   display: grid;
-  grid-template-columns: 200px;
+  grid-template-columns: auto auto;
+  grid-column-gap: 50px;
+}
+
+.TimeTrack .timetrack-grid > div:first-child {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.TimeTrack .timetrack-grid > div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 703px) {
-  .TimeTrack > .materials-grid, .TimeTrack > .timetrack-grid {
+  .TimeTrack .timetrack-grid > div:first-child {
     grid-template-columns: 65px 75px 65px 55px 65px;
     grid-column-gap: 50px;
   }
 }
 
-.TimeTrack > .materials-grid > span, .TimeTrack > .timetrack-grid > span {
-  display: grid;
-  grid-template-columns: auto auto;
+.TimeTrack .timetrack-grid > div > span {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-}
-
-.TimeTrack > .materials-grid > span, .TimeTrack > .timetrack-grid > span > span {
-  text-align: left;
 }
 
 .TimeTrack button {

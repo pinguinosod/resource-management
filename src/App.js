@@ -363,10 +363,12 @@ class App extends Component {
             }} />
           <br />
           <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
-            <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins} CHA</div>
-            <div><span>Monthly Salaries:</span><span>{this.sumSalaries(this.state.workers)} CHA</span></div>
-            <div><span>End Of Month:</span><span>{this.coinsEndMonth(this.state.coins, this.state.workers)} CHA</span></div>
-            <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} HRS</span></div>
+            <div>
+              <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins} CHA</div>
+              <div><span>Monthly Salaries:</span><span>{this.sumSalaries(this.state.workers)} CHA</span></div>
+              <div><span>End Of Month:</span><span>{this.coinsEndMonth(this.state.coins, this.state.workers)} CHA</span></div>
+              <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} HRS</span></div>
+            </div>
           </div>
           <br />
           <Resources

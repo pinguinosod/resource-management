@@ -1,4 +1,4 @@
-.Worker .current-task {
+.Tasks .current-task {
   text-transform: capitalize;
 }
 
@@ -68,10 +68,11 @@
 .Tasks .button-grid {
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
 }
 
 .Tasks button {
-  width: 110px;
+  width: 33%;
   height: 54px;
   margin: 0;
   padding: 10px;
@@ -79,6 +80,10 @@
   border-radius: 0;
   background-color: #efefef;
   word-wrap: break-word;
+}
+
+.Tasks button:nth-child(3n) {
+  width: 34%;
 }
 
 .App.paused .Tasks button:not(.selected) {

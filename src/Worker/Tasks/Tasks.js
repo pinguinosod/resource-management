@@ -33,17 +33,17 @@ const Tasks = (props) => {
         <li className={currentTab === 'gather' ? 'selected' : ''}
           onClick={() => { setCurrentTab('gather') }}>
           {showCurrentTaskMark('gather') ? <span className="current-task-mark"></span> : ""}
-          Gather
+          <span>Gather</span>
         </li>
         <li className={currentTab === 'produce' ? 'selected' : ''}
           onClick={() => { setCurrentTab('produce') }}>
           {showCurrentTaskMark('produce') ? <span className="current-task-mark"></span> : ""}
-          Produce
+          <span>Produce</span>
         </li>
         <li className={currentTab === 'sell' ? 'selected' : ''}
           onClick={() => { setCurrentTab('sell') }}>
           {showCurrentTaskMark('sell') ? <span className="current-task-mark"></span> : ""}
-          Sell
+          <span>Sell</span>
         </li>
       </ul>
       <div className="tab-wrapper">

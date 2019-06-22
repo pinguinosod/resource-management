@@ -1,34 +1,53 @@
 .Resources {
   display: inline-block;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  margin: 10px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: 0;
+  margin: 0 0 5px 0;
+  box-shadow: 0 1px 2px lightgray;
+}
+
+.Resources > div {
   padding: 15px;
-  box-shadow: 0 1px 2px #ccc;
+}
+
+@media (min-width: 420px) {
+  .Resources {
+    border: 1px solid lightgray;
+    border-radius: 2px;
+  }
+}
+
+@media (min-width: 703px) {
+  .Resources {
+    width: 680px;
+    margin: 0 0 10px 2px;
+  }
 }
 
 .App.paused .Resources {
   background-color: lightgray;
 }
 
-.Resources > .materials-grid, .Resources > .products-grid {
+.Resources .materials-grid, .Resources .products-grid {
   display: grid;
-  grid-template-columns: 200px;
+  grid-template-columns: auto;
 }
 
 @media (min-width: 703px) {
-  .Resources > .materials-grid, .Resources > .products-grid {
-    grid-template-columns: 180px 190px 200px;
-    grid-column-gap: 50px;
+  .Resources .materials-grid, .Resources .products-grid {
+    grid-template-columns: 30% 30% 30%;
+    grid-column-gap: 5%;
   }
 }
 
-.Resources > .materials-grid > span, .Resources > .products-grid > span {
-  display: grid;
-  grid-template-columns: auto auto;
+.Resources .materials-grid > span, .Resources .products-grid > span {
+  display: flex;
   justify-content: space-between;
 }
 
-.Resources > .materials-grid > span, .Resources > .products-grid > span > span {
-  text-align: left;
+.Resources .materials-grid > span > span:first-child, .Resources .products-grid > span > span:first-child {
+  margin-right: 5px;
+  word-wrap: break-word;
 }

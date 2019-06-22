@@ -5,7 +5,7 @@ import './Worker.css'
 const Worker = (props) => {
 
   return (
-    <div className={props.working ? 'Worker active' : 'Worker idle'}>
+    <div className="Worker">
       <h2>{props.name}</h2>
       <Tasks
         currentTask={props.currentTask}

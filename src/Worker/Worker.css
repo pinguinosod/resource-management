@@ -1,28 +1,26 @@
 .Worker {
   display: inline-block;
-  border: 1px solid;
-  width: 330px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
   padding: 0;
-  margin: 10px;
-  border-radius: 2px;
-}
-
-.App.paused .Worker.active {
-  background-color: lightgray;
-  border-color: lightgray;
+  margin: 0;
   box-shadow: 0 1px 2px lightgray;
 }
 
-.App.paused .Worker.idle {
+.App.paused .Worker {
   background-color: lightgray;
 }
 
-.Worker.active {
-  border-color: lightgray;
-  box-shadow: 0 1px 2px lightgray;
+@media (min-width: 420px) {
+  .Worker {
+    border: 1px solid lightgray;
+    border-radius: 2px;
+  }
 }
 
-.Worker.idle {
-  border-color: lightgray;
-  box-shadow: 0 1px 2px lightgray;
+@media (min-width: 703px) {
+  .Worker {
+    margin: 0;
+  }
 }

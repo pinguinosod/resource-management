@@ -1,37 +1,60 @@
 .App {
   text-align: center;
+  width: 100%;
+  margin: auto;
+  padding: 0 0 10px 0;
 }
 
 .App .hoard {
   display: inline-block;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  margin: 10px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  padding: 0;
+  margin: 0 0 5px 0;
+  box-shadow: 0 1px 2px lightgray;
+}
+
+.App .hoard > div {
   padding: 15px;
-  box-shadow: 0 1px 2px #ccc;
+  display: grid;
+  grid-template-columns: auto;
+}
+
+@media (min-width: 420px) {
+  .App .hoard {
+    border: 1px solid lightgray;
+    border-radius: 2px;
+  }
+}
+
+@media (min-width: 703px) {
+  .App .hoard {
+    width: 400px;
+    margin: 0 0 10px 0;
+  }
 }
 
 .App .hoard.highlight {
   animation: highlighting 1s linear 0s infinite;
 }
 
-.App .hoard > div.current-coins {
+.App .hoard > div > div.current-coins {
   text-align: center;
   font-weight: bold;
-  margin-bottom: 20px;
 }
 
-.App .hoard > div:not(.current-coins) {
+.App .hoard > div > div:not(.current-coins) {
   display: flex;
   justify-content: space-between;
 }
 
-.App .hoard > div > span:first-child {
-  margin-right: 15px;
+.App .hoard > div > div > span:first-child {
+  text-align: left;
 }
 
-.App .hoard > div > span:last-child {
-  margin-left: 15px;
+.App .hoard > div > div > span:last-child {
+  text-align: right;
 }
 
 @keyframes highlighting {
@@ -51,18 +74,31 @@
 
 .App .worker-grid {
   display: grid;
+  grid-template-columns: 100%;
   justify-content: center;
-  grid-template-columns: auto;
+  grid-gap: 5px;
+  width: 100%;
+}
+
+@media (min-width: 420px) {
+  .App {
+    width: 400px;
+  }
 }
 
 @media (min-width: 703px) {
+  .App {
+    width: 100%;
+  }
+
   .App .worker-grid {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 335px);
+    grid-gap: 10px;
   }
 }
 
 @media (min-width: 1050px) {
   .App .worker-grid {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 335px);
   }
 }
