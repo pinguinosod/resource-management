@@ -57,6 +57,13 @@
   background-color: #efefef;
 }
 
+@media (min-width: 420px) {
+  .Tasks .tab-wrapper, .Tasks .button-grid {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+}
+
 .App.paused .Tasks .tab-wrapper {
   background-color: lightgray;
 }

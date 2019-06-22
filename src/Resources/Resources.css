@@ -1,11 +1,10 @@
 .Resources {
   display: inline-block;
   width: 100%;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  border-top: 1px solid gray;
+  background-color: white;
   padding: 0;
-  margin: 0 0 5px 0;
-  box-shadow: 0 1px 2px lightgray;
+  margin: 0;
 }
 
 .Resources > div {
@@ -14,8 +13,8 @@
 
 @media (min-width: 420px) {
   .Resources {
-    border: 1px solid lightgray;
-    border-radius: 2px;
+    border: 1px solid gray;
+    margin: 0 0 5px 0;
   }
 }
 

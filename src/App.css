@@ -8,11 +8,10 @@
 .App .hoard {
   display: inline-block;
   width: 100%;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  border-top: 1px solid gray;
+  background-color: white;
   padding: 0;
-  margin: 0 0 5px 0;
-  box-shadow: 0 1px 2px lightgray;
+  margin: 0;
 }
 
 .App .hoard > div {
@@ -23,8 +22,12 @@
 
 @media (min-width: 420px) {
   .App .hoard {
-    border: 1px solid lightgray;
-    border-radius: 2px;
+    margin: 0 0 5px 0;
+    border: 1px solid gray;
+  }
+
+  .App .hoard.highlight {
+    animation: highlighting 1s linear 0s infinite;
   }
 }
 
@@ -33,10 +36,6 @@
     width: 400px;
     margin: 0 0 10px 0;
   }
-}
-
-.App .hoard.highlight {
-  animation: highlighting 1s linear 0s infinite;
 }
 
 .App .hoard > div > div.current-coins {
@@ -59,12 +58,10 @@
 
 @keyframes highlighting {
   from {
-    border-color: darkgoldenrod;
-    box-shadow: 0 1px 4px darkgoldenrod;
+    box-shadow: 0 1px 6px darkgoldenrod;
   }
   to {
-    border-color: lightgray;
-    box-shadow: 0 1px 2px #ccc;
+    box-shadow: none;
   }
 }
 
@@ -76,13 +73,16 @@
   display: grid;
   grid-template-columns: 100%;
   justify-content: center;
-  grid-gap: 5px;
   width: 100%;
 }
 
 @media (min-width: 420px) {
   .App {
     width: 400px;
+  }
+
+  .App .worker-grid {
+    grid-gap: 5px;
   }
 }
 

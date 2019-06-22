@@ -1,11 +1,14 @@
 .Worker {
   display: inline-block;
   width: 100%;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  border-top: 1px solid gray;
+  background-color: white;
   padding: 0;
   margin: 0;
-  box-shadow: 0 1px 2px lightgray;
+}
+
+.Worker:last-child {
+  border-bottom: 1px solid gray;
 }
 
 .App.paused .Worker {
@@ -14,8 +17,7 @@
 
 @media (min-width: 420px) {
   .Worker {
-    border: 1px solid lightgray;
-    border-radius: 2px;
+    border: 1px solid gray;
   }
 }
 
