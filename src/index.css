@@ -10,3 +10,29 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
+
+.card {
+  display: inline-block;
+  width: 100%;
+  border-top: 1px solid gray;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+}
+
+.card > div {
+  padding: 15px;
+}
+
+@media (min-width: 420px) {
+  .card {
+    border: 1px solid gray;
+    margin: 0 0 5px 0;
+  }
+}
+
+@media (min-width: 703px) {
+  .card {
+    margin: 0 0 10px 2px;
+  }
+}

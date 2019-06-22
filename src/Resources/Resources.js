@@ -4,7 +4,7 @@ import './Resources.css'
 const Resources = (props) => {
 
   return (
-    <div className="Resources">
+    <div className="Resources card">
       <div>
         <div className="materials-grid">
           {

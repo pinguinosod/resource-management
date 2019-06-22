@@ -61,7 +61,7 @@ const TimeTrack = (props) => {
   const timeElapsedObject = timeElapsed(props.hours)
 
   return (
-    <div className="TimeTrack">
+    <div className="TimeTrack card">
       <div className="timetrack-grid">
         <div>
           <span>

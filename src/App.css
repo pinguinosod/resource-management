@@ -1,72 +1,8 @@
 .App {
   text-align: center;
   width: 100%;
-  margin: auto;
   padding: 0 0 10px 0;
-}
-
-.App .hoard {
-  display: inline-block;
-  width: 100%;
-  border-top: 1px solid gray;
-  background-color: white;
-  padding: 0;
-  margin: 0;
-}
-
-.App .hoard > div {
-  padding: 15px;
-  display: grid;
-  grid-template-columns: auto;
-}
-
-@media (min-width: 420px) {
-  .App .hoard {
-    margin: 0 0 5px 0;
-    border: 1px solid gray;
-  }
-
-  .App .hoard.highlight {
-    animation: highlighting 1s linear 0s infinite;
-  }
-}
-
-@media (min-width: 703px) {
-  .App .hoard {
-    width: 400px;
-    margin: 0 0 10px 0;
-  }
-}
-
-.App .hoard > div > div.current-coins {
-  text-align: center;
-  font-weight: bold;
-}
-
-.App .hoard > div > div:not(.current-coins) {
-  display: flex;
-  justify-content: space-between;
-}
-
-.App .hoard > div > div > span:first-child {
-  text-align: left;
-}
-
-.App .hoard > div > div > span:last-child {
-  text-align: right;
-}
-
-@keyframes highlighting {
-  from {
-    box-shadow: 0 1px 6px darkgoldenrod;
-  }
-  to {
-    box-shadow: none;
-  }
-}
-
-.App.paused .hoard {
-  background-color: lightgray;
+  margin: auto;
 }
 
 .App .worker-grid {

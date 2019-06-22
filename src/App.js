@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import TimeTrack from './TimeTrack/TimeTrack'
+import Balance from './Balance/Balance'
 import Resources from './Resources/Resources'
 import Worker from './Worker/Worker'
-import TimeTrack from './TimeTrack/TimeTrack'
 import './App.css'
 
 class App extends Component {
@@ -318,21 +319,6 @@ class App extends Component {
     })
   }
 
-  calculateCoinsSize = (coins) => {
-    if (coins > 999999) return '3.5rem'
-    if (coins > 499999) return '3.2rem'
-    if (coins > 99999) return '3.0rem'
-    if (coins > 49999) return '2.7rem'
-    if (coins > 9999) return '2.5rem'
-    if (coins > 4999) return '2.2rem'
-    if (coins > 999) return '2.0rem'
-    if (coins > 499) return '1.7rem'
-    if (coins > 99) return '1.5rem'
-    if (coins > 49) return '1.2rem'
-    if (coins > 9) return '1.1rem'
-    return '1.0rem'
-  }
-
   sumSalaries = (workers) => {
     return workers.reduce((totalSalaries, worker) => totalSalaries + worker.salary, 0)
   }
@@ -362,14 +348,12 @@ class App extends Component {
               })
             }} />
           <br />
-          <div className={!this.state.loading && this.state.gotNewCoins ? 'hoard highlight' : 'hoard'}>
-            <div>
-              <div className="current-coins" style={{ fontSize: this.calculateCoinsSize(this.state.coins) }}>{this.state.coins} CHA</div>
-              <div><span>Monthly Salaries:</span><span>{this.sumSalaries(this.state.workers)} CHA</span></div>
-              <div><span>End Of Month:</span><span>{this.coinsEndMonth(this.state.coins, this.state.workers)} CHA</span></div>
-              <div><span>Till End Month:</span><span>{this.hrsTillNextMonth(this.state.hours)} HRS</span></div>
-            </div>
-          </div>
+          <Balance coins={this.state.coins}
+            loading={this.state.loading}
+            gotNewCoins={this.state.gotNewCoins}
+            summedSalaries={this.sumSalaries(this.state.workers)}
+            coinsEndMonth={this.coinsEndMonth(this.state.coins, this.state.workers)}
+            hrsTillNextMonth={this.hrsTillNextMonth(this.state.hours)} />
           <br />
           <Resources
             materials={this.state.materials}
