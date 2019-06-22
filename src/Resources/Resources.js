@@ -4,28 +4,44 @@ import './Resources.css'
 const Resources = (props) => {
 
   return (
-    <div className="Resources card">
-      <div>
-        <div className="materials-grid">
-          {
-            props.materials.map(material => {
-              return <span key={material.id}>
-                <span>{material.name}:</span>
-                <span className="value">{material.stock}</span>
-              </span>
-            })
-          }
+    <div className="Resources">
+      <div className="Materials card">
+        <div>
+          <table className="materials-table">
+            <thead>
+              <tr><th>Material</th><th>Stock</th></tr>
+            </thead>
+            <tbody>
+              {
+                props.materials.map(material => {
+                  return <tr key={material.id}>
+                    <td>{material.name}</td>
+                    <td>{material.stock}</td>
+                  </tr>
+                })
+              }
+            </tbody>
+          </table>
         </div>
-        <hr />
-        <div className="products-grid">
-          {
-            props.products.map(product => {
-              return <span key={product.id}>
-                <span>{product.name}:</span>
-                <span className="value">{product.stock}</span>
-              </span>
-            })
-          }
+      </div>
+      <div className="Products card">
+        <div>
+          <table className="products-table">
+            <thead>
+              <tr><th>Product</th><th>Stock</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+              {
+                props.products.map(product => {
+                  return <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>{product.stock}</td>
+                    <td>{product.marketPrice} CHA</td>
+                  </tr>
+                })
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

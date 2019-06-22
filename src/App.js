@@ -35,7 +35,8 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 3
+      price: 3,
+      marketPrice: 3
     }, {
       id: 3,
       name: 'Leather Jacket',
@@ -44,7 +45,8 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 16
+      price: 11,
+      marketPrice: 11
     }, {
       id: 5,
       name: 'Frankfurter',
@@ -53,7 +55,8 @@ class App extends Component {
         quantity: 2
       }],
       stock: 0,
-      price: 3
+      price: 3,
+      marketPrice: 3
     }, {
       id: 2,
       name: 'Wooden Bench',
@@ -62,7 +65,8 @@ class App extends Component {
         quantity: 10
       }],
       stock: 0,
-      price: 16
+      price: 11,
+      marketPrice: 11
     }, {
       id: 4,
       name: 'Lederhosen',
@@ -71,7 +75,8 @@ class App extends Component {
         quantity: 12
       }],
       stock: 0,
-      price: 21
+      price: 13,
+      marketPrice: 13
     }, {
       id: 6,
       name: 'Wiener Schnitzel',
@@ -80,7 +85,8 @@ class App extends Component {
         quantity: 3
       }],
       stock: 0,
-      price: 5
+      price: 4,
+      marketPrice: 4
     }],
     workers: [{
       id: 1,
@@ -127,10 +133,28 @@ class App extends Component {
       const coinsAtStart = this.state.coins;
       this.setState({ loading: true, gotNewCoins: false });
       this.doLabor()
-      if (this.state.hours > 0 && this.hrsTillNextMonth(this.state.hours) === 0) this.paySalaries()
+      if (this.state.hours > 0 && this.hrsTillNextMonth(this.state.hours) === 0) {
+        this.paySalaries()
+        this.adjustMarketPrices()
+      }
       this.setState({ hours: this.state.hours + 1, loading: false, gotNewCoins: this.state.coins > coinsAtStart })
       this.checkGameOver()
     }
+  }
+
+  adjustMarketPrices() {
+    this.setState({
+      products: this.state.products.map((product) => {
+        return {
+          id: product.id,
+          name: product.name,
+          recipe: product.recipe,
+          stock: product.stock,
+          price: product.price,
+          marketPrice: Math.ceil(product.price * (Math.random() * 0.4 + 0.8))
+        }
+      })
+    })
   }
 
   checkGameOver() {
@@ -176,7 +200,8 @@ class App extends Component {
           name: product.name,
           recipe: product.recipe,
           stock: product.stock + produced,
-          price: product.price
+          price: product.price,
+          marketPrice: product.marketPrice
         }
       }
       return product
@@ -193,7 +218,7 @@ class App extends Component {
       if (product.id === productId) {
         let newStock = product.stock
         if (product.stock > 0) {
-          updatedCoins += product.price
+          updatedCoins += product.marketPrice
           newStock--
         }
 
@@ -203,6 +228,7 @@ class App extends Component {
           recipe: product.recipe,
           stock: newStock,
           price: product.price,
+          marketPrice: product.marketPrice,
           taskEffort: product.taskEffort
         }
       }

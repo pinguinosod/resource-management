@@ -1,35 +1,35 @@
 @media (min-width: 703px) {
-  .Resources {
-    width: 680px;
+  .Materials {
+    width: 200px;
+    min-height: 186px;
+    margin: 0 5px 10px 2px;
+  }
+
+  .Products {
+    width: 400px;
   }
 }
 
-.App.paused .Resources {
+.App.paused .Resources .Materials,
+.App.paused .Resources .Products {
   background-color: lightgray;
 }
 
-.Resources .materials-grid, 
-.Resources .products-grid {
-  display: grid;
-  grid-template-columns: auto;
+.products-table,
+.materials-table {
+  width: 100%;
 }
 
-@media (min-width: 703px) {
-  .Resources .materials-grid, 
-  .Resources .products-grid {
-    grid-template-columns: 30% 30% 30%;
-    grid-column-gap: 5%;
-  }
+.products-table > thead > tr > th:first-child,
+.products-table > tbody > tr > td:first-child,
+.materials-table > thead > tr > th:first-child,
+.materials-table > tbody > tr > td:first-child {
+  text-align: left;
 }
 
-.Resources .materials-grid > span, 
-.Resources .products-grid > span {
-  display: flex;
-  justify-content: space-between;
-}
-
-.Resources .materials-grid > span > span:first-child, 
-.Resources .products-grid > span > span:first-child {
-  margin-right: 5px;
-  word-wrap: break-word;
+.products-table > thead > tr > th,
+.products-table > tbody > tr > td,
+.materials-table > thead > tr > th,
+.materials-table > tbody > tr > td {
+  text-align: right;
 }
