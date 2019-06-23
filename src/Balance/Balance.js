@@ -22,9 +22,9 @@ const Balance = (props) => {
     <div className={!props.loading && props.gotNewCoins ? 'Balance card highlight' : 'Balance card'}>
       <div>
         <div className="current-coins" style={{ fontSize: calculateCoinsSize(props.coins) }}>{props.coins} CHA</div>
+        <div><span>Till End Month:</span><span>{props.hrsTillNextMonth} HRS</span></div>
         <div><span>Monthly Salaries:</span><span>{props.summedSalaries} CHA</span></div>
         <div><span>End Of Month:</span><span>{props.coinsEndMonth} CHA</span></div>
-        <div><span>Till End Month:</span><span>{props.hrsTillNextMonth} HRS</span></div>
       </div>
     </div>
   )

@@ -130,8 +130,8 @@ class App extends Component {
 
   tick() {
     if (!this.state.paused) {
-      const coinsAtStart = this.state.coins;
-      this.setState({ loading: true, gotNewCoins: false });
+      const coinsAtStart = this.state.coins
+      this.setState({ loading: true, gotNewCoins: false })
       this.doLabor()
       if (this.state.hours > 0 && this.hrsTillNextMonth(this.state.hours) === 0) {
         this.paySalaries()
@@ -140,6 +140,21 @@ class App extends Component {
       this.setState({ hours: this.state.hours + 1, loading: false, gotNewCoins: this.state.coins > coinsAtStart })
       this.checkGameOver()
     }
+    this.updateTitle()
+  }
+
+  updateTitle() {
+    let title = ''
+    if (this.state.gameOver) {
+      title += 'Game Over'
+    } else if (this.state.paused) {
+      title += 'Paused'
+    } else {
+      title += this.hrsTillNextMonth(this.state.hours) + ' HRS'
+    }
+    title += ' | ' + this.state.coins + ' CHA'
+    title += ' - Resource Management'
+    document.title = title
   }
 
   adjustMarketPrices() {
@@ -345,6 +360,14 @@ class App extends Component {
     })
   }
 
+  pauseToggleHandler = () => {
+    this.setState(prevState => {
+      return {
+        paused: !prevState.paused
+      }
+    })
+  }
+
   sumSalaries = (workers) => {
     return workers.reduce((totalSalaries, worker) => totalSalaries + worker.salary, 0)
   }
@@ -366,13 +389,7 @@ class App extends Component {
             paused={this.state.paused}
             gameOver={this.state.gameOver}
             hours={this.state.hours}
-            pauseToggleHandler={() => {
-              this.setState(prevState => {
-                return {
-                  paused: !prevState.paused
-                }
-              })
-            }} />
+            pauseToggleHandler={this.pauseToggleHandler} />
           <br />
           <Balance coins={this.state.coins}
             loading={this.state.loading}

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Resource Management",
+  "name": "Resource Management Game",
   "icons": [
     {
       "src": "favicon.ico",

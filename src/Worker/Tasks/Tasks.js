@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Tasks.css'
 
 const Tasks = (props) => {
-  const [currentTab, setCurrentTab] = useState(props.currentTask.task);
+  const [currentTab, setCurrentTab] = useState(props.currentTask.task)
 
   const getTaskTargetName = (currentTask) => {
     if (currentTask.task === 'gather') {
