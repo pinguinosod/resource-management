@@ -5,7 +5,7 @@ const TimeTrack = (props) => {
 
   const timeElapsed = (hours) => {
     const HOURS_IN_DAY = 8
-    const DAYS_IN_WEEK = 5
+    const DAYS_IN_WEEK = 7
     const WEEKS_IN_MONTH = 4
     const MONTHS_IN_YEAR = 12
     const timeElapsedObject = {

@@ -93,6 +93,7 @@ class App extends Component {
       name: 'Hugo',
       working: true,
       salary: 100,
+      stress: 0,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -102,6 +103,7 @@ class App extends Component {
       name: 'Paco',
       working: true,
       salary: 100,
+      stress: 0,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -111,6 +113,7 @@ class App extends Component {
       name: 'Luis',
       working: true,
       salary: 100,
+      stress: 0,
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -262,6 +265,11 @@ class App extends Component {
       let updatedProducts = [...prevState.products]
       let updatedCoins = prevState.coins
       const updatedWorkers = prevState.workers.map((worker) => {
+        let workerStress = worker.stress
+        if (workerStress >= 40) {
+          worker.working = false
+        }
+
         if (worker.working) {
           if (worker.currentTask.task === 'gather') {
             ({ updatedMaterials } = this.gatherMaterial(worker.currentTask.targetId, updatedMaterials))
@@ -270,18 +278,19 @@ class App extends Component {
           } else if (worker.currentTask.task === 'sell') {
             ({ updatedCoins, updatedProducts } = this.sellProduct(worker.currentTask.targetId, updatedCoins, updatedProducts))
           }
-          return {
-            id: worker.id,
-            name: worker.name,
-            working: worker.working,
-            salary: worker.salary,
-            currentTask: {
-              task: worker.currentTask.task,
-              targetId: worker.currentTask.targetId
-            }
-          }
+          workerStress++
+        } else {
+          workerStress = workerStress >= 1 ? workerStress - 1 : 0
         }
-        return worker
+
+        return {
+          id: worker.id,
+          name: worker.name,
+          working: worker.working,
+          salary: worker.salary,
+          stress: workerStress,
+          currentTask: worker.currentTask
+        }
       })
 
       return {
@@ -330,6 +339,7 @@ class App extends Component {
               name: worker.name,
               working: !worker.working,
               salary: worker.salary,
+              stress: worker.stress,
               currentTask: worker.currentTask
             }
           } else {
@@ -350,6 +360,7 @@ class App extends Component {
               name: worker.name,
               working: worker.working,
               salary: worker.salary,
+              stress: worker.stress,
               currentTask: newTask
             }
           } else {
@@ -373,7 +384,7 @@ class App extends Component {
   }
 
   hrsTillNextMonth = (hrs) => {
-    return (Math.ceil(hrs / 160) * 160) - hrs
+    return (Math.ceil(hrs / 224) * 224) - hrs
   }
 
   coinsEndMonth = (coins, workers) => {
@@ -410,6 +421,7 @@ class App extends Component {
                   key={worker.id}
                   name={worker.name}
                   working={worker.working}
+                  stress={worker.stress}
                   currentTask={worker.currentTask}
                   materials={this.state.materials}
                   products={this.state.products}
