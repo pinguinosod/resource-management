@@ -3,6 +3,7 @@ import TimeTrack from './TimeTrack/TimeTrack'
 import Balance from './Balance/Balance'
 import Resources from './Resources/Resources'
 import Worker from './Worker/Worker'
+import { WORKER_MAX_STRESS, WORKER_STRESS_PER_HOUR, WORKER_STRESS_RELIEF_PER_HOUR } from './constants'
 import './App.css'
 
 class App extends Component {
@@ -266,7 +267,7 @@ class App extends Component {
       let updatedCoins = prevState.coins
       const updatedWorkers = prevState.workers.map((worker) => {
         let workerStress = worker.stress
-        if (workerStress >= 40) {
+        if (workerStress >= WORKER_MAX_STRESS) {
           worker.working = false
         }
 
@@ -278,9 +279,9 @@ class App extends Component {
           } else if (worker.currentTask.task === 'sell') {
             ({ updatedCoins, updatedProducts } = this.sellProduct(worker.currentTask.targetId, updatedCoins, updatedProducts))
           }
-          workerStress++
+          workerStress += WORKER_STRESS_PER_HOUR
         } else {
-          workerStress = workerStress >= 1 ? workerStress - 1 : 0
+          workerStress = workerStress >= WORKER_STRESS_RELIEF_PER_HOUR ? workerStress - WORKER_STRESS_RELIEF_PER_HOUR : 0
         }
 
         return {

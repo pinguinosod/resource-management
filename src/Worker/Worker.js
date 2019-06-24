@@ -1,11 +1,12 @@
 import React from 'react'
 import Tasks from './Tasks/Tasks'
 import './Worker.css'
+import { WORKER_MAX_STRESS } from './../constants'
 
 const Worker = (props) => {
 
   const stressPercentage = (stressLevel) => {
-    return Math.ceil((stressLevel * 100) / 40)
+    return Math.ceil((stressLevel * 100) / WORKER_MAX_STRESS)
   }
 
   const stressBarStyles = (stressLevel) => {

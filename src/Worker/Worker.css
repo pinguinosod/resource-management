@@ -40,6 +40,7 @@
   left: 0;
   top: 0;
   height: 3px;
+  transition: width .7s ease-out;
 }
 
 .Worker .stress-level > div:last-child {

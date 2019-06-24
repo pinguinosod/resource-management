@@ -3,6 +3,19 @@ import './Resources.css'
 
 const Resources = (props) => {
 
+  const highlightProductPriceStyle = (product) => {
+    let fontWeight = 400
+    if (product.marketPrice === Math.ceil(product.price * 1.2)) {
+      fontWeight = 1000
+    } else if (product.marketPrice === Math.ceil(product.price * 1.1)) {
+      fontWeight = 600
+    }
+
+    return {
+      fontWeight
+    }
+  }
+
   return (
     <div className="Resources">
       <div className="Materials card">
@@ -36,7 +49,7 @@ const Resources = (props) => {
                   return <tr key={product.id}>
                     <td>{product.name}</td>
                     <td>{product.stock}</td>
-                    <td>{product.marketPrice} CHA</td>
+                    <td style={highlightProductPriceStyle(product)}>{product.marketPrice} CHA</td>
                   </tr>
                 })
               }
