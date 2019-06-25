@@ -3,7 +3,8 @@ import TimeTrack from './TimeTrack/TimeTrack'
 import Balance from './Balance/Balance'
 import Resources from './Resources/Resources'
 import Worker from './Worker/Worker'
-import { WORKER_MAX_STRESS, WORKER_STRESS_PER_HOUR, WORKER_STRESS_RELIEF_PER_HOUR } from './constants'
+import { WORKER_STRESS_PER_HOUR, WORKER_STRESS_RELIEF_PER_HOUR, WORKER_HAPINESS_MAX } from './constants'
+import { stressPercentage } from './functions'
 import './App.css'
 
 class App extends Component {
@@ -95,6 +96,7 @@ class App extends Component {
       working: true,
       salary: 100,
       stress: 0,
+      happiness: Math.ceil(WORKER_HAPINESS_MAX / 2),
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -105,6 +107,7 @@ class App extends Component {
       working: true,
       salary: 100,
       stress: 0,
+      happiness: Math.ceil(WORKER_HAPINESS_MAX / 2),
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -115,6 +118,7 @@ class App extends Component {
       working: true,
       salary: 100,
       stress: 0,
+      happiness: Math.ceil(WORKER_HAPINESS_MAX / 2),
       currentTask: {
         task: 'gather',
         targetId: 1
@@ -265,11 +269,35 @@ class App extends Component {
       let updatedMaterials = [...prevState.materials]
       let updatedProducts = [...prevState.products]
       let updatedCoins = prevState.coins
-      const updatedWorkers = prevState.workers.map((worker) => {
-        let workerStress = worker.stress
-        if (workerStress >= WORKER_MAX_STRESS) {
-          worker.working = false
+      let updatedWorkers = prevState.workers.filter((worker) => {
+        if (worker.working && worker.happiness === 0 && Math.random() <= 0.2) {
+          updatedCoins -= worker.salary
+          return false
         }
+        return true
+      })
+      updatedWorkers = updatedWorkers.map((worker) => {
+        const stressPerc = stressPercentage(worker.stress)
+        let workerStress = worker.stress
+        let workerHappiness = worker.happiness
+
+        if (stressPerc > 100) {
+          worker.working = false
+          workerHappiness = workerHappiness - 20 >= 0 ? workerHappiness - 20 : 0
+        }
+
+        if (worker.working) {
+          if (stressPerc >= 80) {
+            workerHappiness = workerHappiness - 7 >= 0 ? workerHappiness - 7 : 0
+          } else if (stressPerc > 50) {
+            workerHappiness = workerHappiness - 1 >= 0 ? workerHappiness - 1 : 0
+          } else {
+            workerHappiness = workerHappiness + 1 <= WORKER_HAPINESS_MAX ? workerHappiness + 1 : WORKER_HAPINESS_MAX
+          }
+        } else {
+          workerHappiness = workerHappiness + 3 <= WORKER_HAPINESS_MAX ? workerHappiness + 3 : WORKER_HAPINESS_MAX
+        }
+
 
         if (worker.working) {
           if (worker.currentTask.task === 'gather') {
@@ -290,6 +318,7 @@ class App extends Component {
           working: worker.working,
           salary: worker.salary,
           stress: workerStress,
+          happiness: workerHappiness,
           currentTask: worker.currentTask
         }
       })
@@ -341,6 +370,7 @@ class App extends Component {
               working: !worker.working,
               salary: worker.salary,
               stress: worker.stress,
+              happiness: worker.happiness,
               currentTask: worker.currentTask
             }
           } else {
@@ -362,6 +392,7 @@ class App extends Component {
               working: worker.working,
               salary: worker.salary,
               stress: worker.stress,
+              happiness: worker.happiness,
               currentTask: newTask
             }
           } else {
@@ -423,6 +454,7 @@ class App extends Component {
                   name={worker.name}
                   working={worker.working}
                   stress={worker.stress}
+                  happiness={worker.happiness}
                   currentTask={worker.currentTask}
                   materials={this.state.materials}
                   products={this.state.products}

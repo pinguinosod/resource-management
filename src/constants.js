@@ -1,3 +1,4 @@
-export const WORKER_MAX_STRESS = 400
+export const WORKER_STRESS_MAX = 400
 export const WORKER_STRESS_PER_HOUR = 10
 export const WORKER_STRESS_RELIEF_PER_HOUR = 25
+export const WORKER_HAPINESS_MAX = 100

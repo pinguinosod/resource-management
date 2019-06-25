@@ -28,23 +28,39 @@
   }
 }
 
+.Worker .happiness-level {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 103px;
+  width: 3px;
+}
+
+.Worker .happiness-level > div:last-child {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}
+
 .Worker .stress-level {
   position: absolute;
   top: 0;
-  height: 3px;
-  width: 100%;
-}
-
-.Worker .stress-level > div:first-child {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 3px;
-  transition: width .7s ease-out;
+  right: 0;
+  height: 103px;
+  width: 3px;
 }
 
 .Worker .stress-level > div:last-child {
   position: absolute;
   right: 5px;
   top: 5px;
+}
+
+.Worker .happiness-level > div:first-child,
+.Worker .stress-level > div:first-child {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  transition: height .7s ease-out;
 }
