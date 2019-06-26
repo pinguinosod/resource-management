@@ -21,28 +21,34 @@ const Tasks = (props) => {
     return props.currentTask.task + 'ing ' + getTaskTargetName(props.currentTask)
   }
 
-  const showCurrentTaskMark = (taskName) => {
-    return !props.paused && props.working && !props.loading && props.currentTask.task === taskName
+  const showTaskPulse = () => {
+    return !props.paused && !props.loading
+  }
+
+  const getTaskPulseName = (working) => {
+    return working ? 'current-task-pulse working' : 'current-task-pulse resting'
   }
 
   return (
     <div className="Tasks">
-      <div className="current-task">{currentTaskName()}</div>
+      <div className="current-task">
+        <span>
+          {showTaskPulse() ? <span className={getTaskPulseName(props.working)}></span> : ''}
+          {currentTaskName()}
+        </span>
+      </div>
       <br />
       <ul className="tab-list">
         <li className={currentTab === 'gather' ? 'selected' : ''}
           onClick={() => { setCurrentTab('gather') }}>
-          {showCurrentTaskMark('gather') ? <span className="current-task-mark"></span> : ""}
           <span>Gather</span>
         </li>
         <li className={currentTab === 'produce' ? 'selected' : ''}
           onClick={() => { setCurrentTab('produce') }}>
-          {showCurrentTaskMark('produce') ? <span className="current-task-mark"></span> : ""}
           <span>Produce</span>
         </li>
         <li className={currentTab === 'sell' ? 'selected' : ''}
           onClick={() => { setCurrentTab('sell') }}>
-          {showCurrentTaskMark('sell') ? <span className="current-task-mark"></span> : ""}
           <span>Sell</span>
         </li>
       </ul>

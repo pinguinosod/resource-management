@@ -35,19 +35,31 @@
   border-bottom: 3px solid darkgoldenrod;
 }
 
-.Tasks ul.tab-list > li > .current-task-mark {
-  height: 3px;
-  width: 100%;
+.Tasks .current-task > span {
+  position: relative;
+}
+
+.Tasks .current-task > span > .current-task-pulse {
   position: absolute;
-  top: 0;
-  left: 0;
-  background-color: lightgreen;
-  animation: taskProgress 1s linear 0s 1;
+  width: 10px;
+  height: 10px;
+  left: -20px;
+  top: 3px;
+  border-radius: 10px;
+  animation: taskProgress 1s ease-in 0s 1;
 }
 
 @keyframes taskProgress {
-  from {width: 1%;}
-  to {width: 100%;}
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.Tasks .current-task > span > .current-task-pulse.working {
+  background-color: darkgoldenrod;
+}
+
+.Tasks .current-task > span > .current-task-pulse.resting {
+  background-color: lightgreen;
 }
 
 .Tasks .tab-wrapper {
